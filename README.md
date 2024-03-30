@@ -1,2 +1,4 @@
 # CountingMareep
-A Pokémon Sleep Supplementary App made by Davinderpal and Harman
+A Pokémon Sleep Supplementary App
+
+Developers: Davinderpal Toor, Harman Sandhu

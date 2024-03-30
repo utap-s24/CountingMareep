@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_box">
+
+    <fragment
+        android:id="@+id/navigation_box"
+        android:name="com.example.countingmareep.ui.box.BoxFragment"
+        android:label="Box"
+        tools:layout="@layout/fragment_team_builder" />
+
+    <fragment
+        android:id="@+id/navigation_team_builder"
+        android:name="com.example.countingmareep.ui.team_builder.TeamBuilderFragment"
+        android:label="Team Builder"
+        tools:layout="@layout/fragment_box" />
+
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.example.countingmareep.ui.search.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.example.countingmareep.ui.settings.SettingsFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_search" />
+</navigation>
