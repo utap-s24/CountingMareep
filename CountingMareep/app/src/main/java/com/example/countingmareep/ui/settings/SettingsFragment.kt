@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.countingmareep.MainActivity
 import com.example.countingmareep.databinding.FragmentSettingsBinding
 
 class SettingsFragment : Fragment() {
@@ -31,11 +33,23 @@ class SettingsFragment : Fragment() {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-//        val textView: TextView = binding.textSettings
-//        settingsViewModel.text.observe(viewLifecycleOwner) {
-//            textView.text = it
-//        }
+        binding.themeToggle.isChecked = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
+        binding.themeToggle.setOnCheckedChangeListener { _, isChecked ->
+            setThemeFromSwitch(isChecked)
+        }
+
         return root
+    }
+
+    private fun setThemeFromSwitch(isDarkMode: Boolean) {
+//        val themeMode = if (isDarkMode) {
+//            AppCompatDelegate.MODE_NIGHT_YES
+//        } else {
+//            AppCompatDelegate.MODE_NIGHT_NO
+//        }
+//        AppCompatDelegate.setDefaultNightMode(themeMode)
+        val mainActivity = activity as MainActivity
+        mainActivity.saveTheme(isDarkMode)
     }
 
     override fun onDestroyView() {

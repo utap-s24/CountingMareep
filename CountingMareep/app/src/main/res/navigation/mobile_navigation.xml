@@ -34,4 +34,11 @@
         android:name="com.example.countingmareep.ui.splash.SplashFragment"
         android:label="Splash"
         tools:layout="@layout/fragment_splash" />
+
+
+    <fragment
+        android:id="@+id/navigation_create"
+        android:name="com.example.countingmareep.ui.splash.CreateFragment"
+        android:label="Create Account"
+        tools:layout="@layout/fragment_create" />
 </navigation>
