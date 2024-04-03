@@ -49,7 +49,9 @@
         android:layout_weight="0.25"
         android:background="@drawable/rounded_background"
         android:gravity="center"
-        android:text="User Name" />
+        android:text="User Name"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <Button
         android:layout_width="match_parent"
@@ -60,7 +62,9 @@
         android:layout_marginBottom="5dp"
         android:layout_weight="0.25"
         android:background="@drawable/rounded_background"
-        android:text="Edit User Details" />
+        android:backgroundTint="@color/purple_200"
+        android:text="Edit User Details"
+        android:textSize="15sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -80,27 +84,17 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:text="Your Stats"
-            android:textColor="?attr/colorOnSecondary"
+            android:textColor="?attr/colorTertiary"
             android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/settingsBirthdayTV"
+            android:id="@+id/settingsRankTV"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="Birthday: 00/00/0000"
-            android:textColor="?attr/colorOnSecondary"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/settingsLocationTV"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="Location: Austin, TX"
-            android:textColor="?attr/colorOnSecondary"
+            android:text="Research Rank: 0"
+            android:textColor="?attr/colorTertiary"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -110,7 +104,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:text="Pokémon Befriended: 0"
-            android:textColor="?attr/colorOnSecondary"
+            android:textColor="?attr/colorTertiary"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -120,7 +114,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:text="Hours Slept: 0"
-            android:textColor="?attr/colorOnSecondary"
+            android:textColor="?attr/colorTertiary"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -130,7 +124,17 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:text="Teams Generated: 0"
-            android:textColor="?attr/colorOnSecondary"
+            android:textColor="?attr/colorTertiary"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/settingsBirthdayTV"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="Birthday: 00/00/0000"
+            android:textColor="?attr/colorTertiary"
             android:textSize="20sp"
             android:textStyle="bold" />
     </LinearLayout>

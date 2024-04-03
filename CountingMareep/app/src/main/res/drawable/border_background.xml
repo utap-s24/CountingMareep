@@ -4,5 +4,5 @@
     <solid android:color="@android:color/transparent" /> <!-- Background color -->
     <stroke
         android:width="2dp"
-        android:color="?attr/colorOnSecondary" /> <!-- Border color -->
+        android:color="?attr/inputBorder" /> <!-- Border color -->
 </shape>

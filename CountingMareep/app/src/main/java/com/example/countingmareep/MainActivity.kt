@@ -1,7 +1,9 @@
 package com.example.countingmareep
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -23,19 +25,24 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: ViewModel by viewModels()
     private lateinit var navigationSet: Set<Int>
     private lateinit var navController: NavController
+
     // Shared Prefs
     private val PREFS_FILENAME = "my_app_settings"
     private val PREFS_THEME = "MY_THEME"
+    private val PREFS_NAV = "MY_NAV"
     private lateinit var appSettings: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appSettings = getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
-        val currentTheme = appSettings.getInt(PREFS_THEME, AppCompatDelegate.MODE_NIGHT_YES)
+        val currentTheme = appSettings.getBoolean(PREFS_THEME, true)
         Log.d("CURRENT THEME", currentTheme.toString())
-        AppCompatDelegate.setDefaultNightMode(currentTheme)
-        
+        if(currentTheme) {
+            setTheme(R.style.Theme_CountingMareep_DARK)
+        } else {
+            setTheme(R.style.Theme_CountingMareep_LIGHT)
+        }
+        viewModel.setTheme(currentTheme)
         super.onCreate(savedInstanceState)
-
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -53,8 +60,13 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        loginRedirect()
-
+        val navDest = appSettings.getInt(PREFS_NAV, -1)
+        if(navDest == -1) {
+            loginRedirect()
+        } else {
+            navController.navigate(navDest)
+            resetNavPref()
+        }
     }
 
     fun loginRedirect(): Unit {
@@ -71,7 +83,8 @@ class MainActivity : AppCompatActivity() {
 
     fun loggedInRedirect(): Unit {
         // Don't get back to splash page
-        while(navController.popBackStack()) {}
+        while (navController.popBackStack()) {
+        }
         navController.navigate(R.id.navigation_box)
         binding.navView.visibility = View.VISIBLE
     }
@@ -81,16 +94,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun saveTheme(isDark: Boolean): Unit {
-        val theme = if(isDark) {
-            AppCompatDelegate.MODE_NIGHT_YES
+//        val theme = if (isDark) {
+//            AppCompatDelegate.MODE_NIGHT_YES
+//        } else {
+//            AppCompatDelegate.MODE_NIGHT_NO
+//        }
+        val currentDest = navController.currentDestination
+        val currentNav = if (currentDest != null) {
+            currentDest.id
         } else {
-            AppCompatDelegate.MODE_NIGHT_NO
+            R.id.navigation_box
         }
-        val editor = appSettings.edit()
-        editor.putInt(PREFS_THEME, theme)
-        editor.apply()
 
+        val editor = appSettings.edit()
+        editor.putBoolean(PREFS_THEME, isDark)
+        editor.putInt(PREFS_NAV, currentNav)
+        editor.apply()
         this.recreate()
+    }
+
+    fun resetNavPref(): Unit {
+        val editor = appSettings.edit()
+        editor.putInt(PREFS_NAV, -1)
+        editor.apply()
     }
 
     fun setTitle(title: String) {

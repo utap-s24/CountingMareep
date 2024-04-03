@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="CustomStyle">
-        <attr name="inputBorder" format="color" />
-        <attr name="buttonText" format="color" />
-    </declare-styleable>
+    <attr name="inputBorder" format="color" />
+    <attr name="buttonTextAlt" format="color" />
 </resources>

@@ -9,5 +9,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class ViewModel : ViewModel() {
+    private var themeIsDark: Boolean = false
 
+    fun setTheme(isDark: Boolean): Unit {
+        themeIsDark = isDark
+    }
+
+    fun isDark(): Boolean {
+        return themeIsDark
+    }
 }
