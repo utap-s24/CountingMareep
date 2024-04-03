@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/navigation_box"
         android:name="com.example.countingmareep.ui.box.BoxFragment"
-        android:label="Box"
+        android:label="Pokémon Box"
         tools:layout="@layout/fragment_team_builder" />
 
     <fragment

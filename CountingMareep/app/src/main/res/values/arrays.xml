@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spinner_entries">
+        <item>RP</item>
+        <item>Level</item>
+        <item>Name</item>
+        <item>Pokédex No.</item>
+    </string-array>
+</resources>

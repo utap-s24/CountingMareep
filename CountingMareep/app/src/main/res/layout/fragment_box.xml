@@ -6,27 +6,58 @@
     android:layout_height="match_parent"
     tools:context=".ui.box.BoxFragment">
 
-    <TextView
-        android:id="@+id/text_box"
+    <LinearLayout
+        android:id="@+id/topRow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/login_button"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/boxRV"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sorted By: "
+            android:textColor="?attr/colorTertiary"
+            android:textSize="20dp" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/sortSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:entries="@array/spinner_entries"
+            android:spinnerMode="dropdown" />
+
+        <Button
+            android:id="@+id/ascDescButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="?attr/colorSecondary"
+            android:text="▼" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/boxRV"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/topRow"
+        app:spanCount="4"
+        tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        tools:listitem="@layout/card_layout" />
 
-    <Button
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/login_button"
-        android:text="Log In"
-        app:layout_constraintTop_toBottomOf="@+id/text_box"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add"
+        app:backgroundTint="?attr/colorSecondary"
+        app:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
