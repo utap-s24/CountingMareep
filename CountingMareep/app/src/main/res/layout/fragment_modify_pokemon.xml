@@ -7,32 +7,21 @@
     android:gravity="center"
     android:orientation="vertical">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listRV"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.5"
+        app:spanCount="5"
+        tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        tools:listitem="@layout/mini_card_layout" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:layout_weight="3"
         android:gravity="center_horizontal"
         android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pokemon: "
-                android:textSize="18dp" />
-
-            <AutoCompleteTextView
-                android:id="@+id/pokemonInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Bulbasaur"
-                android:text="" />
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -54,104 +43,109 @@
                 android:text="" />
         </LinearLayout>
 
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alignmentMode="alignMargins"
+            android:columnCount="2"
+            android:columnOrderPreserved="false"
+            android:padding="16dp"
+            android:rowCount="2">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:layout_columnWeight="1">
+
+                <AutoCompleteTextView
+                    android:id="@+id/subSkill1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoSizeMaxTextSize="20sp"
+                    android:autoSizeMinTextSize="10sp"
+                    android:autoSizeTextType="uniform"
+                    android:hint="Research EXP Bonus"
+                    android:text=""
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="1"
+                android:layout_columnWeight="1">
+
+                <AutoCompleteTextView
+                    android:id="@+id/subSkill2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoSizeMaxTextSize="20sp"
+                    android:autoSizeMinTextSize="10sp"
+                    android:autoSizeTextType="uniform"
+                    android:hint="Skill Level Up S"
+                    android:text=""
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_row="1"
+                android:layout_column="0"
+                android:layout_columnWeight="1">
+
+                <AutoCompleteTextView
+                    android:id="@+id/subSkill3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoSizeMaxTextSize="20sp"
+                    android:autoSizeMinTextSize="10sp"
+                    android:autoSizeTextType="uniform"
+                    android:hint="Skill Trigger S"
+                    android:text=""
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_row="1"
+                android:layout_column="1"
+                android:layout_columnWeight="1">
+
+                <AutoCompleteTextView
+                    android:id="@+id/subSkill4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoSizeMaxTextSize="20sp"
+                    android:autoSizeMinTextSize="10sp"
+                    android:autoSizeTextType="uniform"
+                    android:hint="Skill Level Up M"
+                    android:text=""
+                    android:textSize="15sp" />
+            </LinearLayout>
+        </GridLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sub Skill 1: "
-                android:textSize="18dp" />
-
-            <AutoCompleteTextView
-                android:id="@+id/subSkill1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Berry Finding S"
-                android:text="" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sub Skill 2: "
-                android:textSize="18dp" />
-
-            <AutoCompleteTextView
-                android:id="@+id/subSkill2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Berry Finding S"
-                android:text="" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sub Skill 3: "
-                android:textSize="18dp" />
-
-            <AutoCompleteTextView
-                android:id="@+id/subSkill3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Berry Finding S"
-                android:text="" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sub Skill 4: "
-                android:textSize="18dp" />
-
-            <AutoCompleteTextView
-                android:id="@+id/subSkill4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Berry Finding S"
-                android:text="" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sub Skill 5: "
-                android:textSize="18dp" />
+            android:layout_gravity="center"
+            android:layout_marginStart="75dp"
+            android:layout_marginEnd="75dp">
 
             <AutoCompleteTextView
                 android:id="@+id/subSkill5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Berry Finding S"
-                android:text="" />
+                android:autoSizeMaxTextSize="20sp"
+                android:autoSizeMinTextSize="10sp"
+                android:autoSizeTextType="uniform"
+                android:hint="Helping Speed S"
+                android:text=""
+                android:textSize="15sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -160,21 +154,101 @@
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
             android:gravity="center">
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/ingredient1"
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="" />
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/ingredient2"
+                android:layout_marginEnd="20dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lv. 1"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/ingredient1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_background"
+                    android:backgroundTint="?attr/contrastMid"
+                    android:spinnerMode="dialog"
+                    android:text="" />
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/ingredient1Multiplier"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dialog" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="" />
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/ingredient3"
+                android:layout_marginEnd="20dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lv. 30"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/ingredient2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_background"
+                    android:backgroundTint="?attr/contrastMid"
+                    android:spinnerMode="dialog"
+                    android:text="" />
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/ingredient2Multiplier"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dialog" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="" />
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lv. 60"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/ingredient3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_background"
+                    android:backgroundTint="?attr/contrastMid"
+                    android:spinnerMode="dialog"
+                    android:text="" />
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/ingredient3Multiplier"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dialog" />
+            </LinearLayout>
         </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_background"
+            android:backgroundTint="?attr/colorSecondary"
+            android:text="Save"
+            android:layout_marginTop="10dp"
+            android:textColor="?attr/buttonTextAlt" />
     </LinearLayout>
 </LinearLayout>

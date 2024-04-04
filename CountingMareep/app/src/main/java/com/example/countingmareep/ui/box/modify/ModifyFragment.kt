@@ -1,5 +1,7 @@
 package com.example.countingmareep.ui.box.modify
 
+import MarginItemDecoration
+import ModifyAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.countingmareep.MainActivity
 import com.example.countingmareep.ViewModel
 import com.example.countingmareep.databinding.FragmentModifyPokemonBinding
@@ -33,19 +36,13 @@ class ModifyFragment : Fragment() {
         val root: View = binding.root
 
         val mainActivity = activity as MainActivity
+
         // Pokemon Selection
-        val adapter = ArrayAdapter(
-            mainActivity,
-            androidx.appcompat.R.layout.select_dialog_item_material,
-            PokemonData.nameList
-        )
-        binding.pokemonInput.threshold = 0
-        binding.pokemonInput.setAdapter(adapter)
-        binding.pokemonInput.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                binding.pokemonInput.showDropDown()
-            }
-        }
+        val recyclerView = binding.listRV
+        recyclerView.layoutManager = GridLayoutManager(mainActivity, 5)
+        recyclerView.addItemDecoration(MarginItemDecoration(10, 5, GridLayoutManager.VERTICAL))
+        binding.listRV.adapter = ModifyAdapter(PokemonData.pokemon, mainActivity)
+
         // Sub Skills
         val subSkillAdapter = ArrayAdapter(
             mainActivity,
