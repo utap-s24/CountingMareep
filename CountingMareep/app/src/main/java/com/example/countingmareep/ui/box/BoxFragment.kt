@@ -55,7 +55,7 @@ class BoxFragment : Fragment() {
         // Get Data
         dataList = viewModel.getDataList().sortedBy { it.RP }
         // Create Adapter
-        adapter = BoxAdapter(dataList)
+        adapter = BoxAdapter(dataList, mainActivity)
         recyclerView.adapter = adapter
 
         binding.ascDescButton.setOnClickListener {
@@ -82,6 +82,10 @@ class BoxFragment : Fragment() {
             override fun onNothingSelected(parentView: AdapterView<*>?) {
 
             }
+        }
+
+        binding.createButton.setOnClickListener {
+            mainActivity.navController.navigate(R.id.navigation_modify)
         }
 
         return root

@@ -19,6 +19,6 @@ enum class Ingredients {
     GREENGRASS_CORN
 }
 
-class Ingredient(id: Ingredients, quantity: Int) {
+class Ingredient(var id: Ingredients, var quantity: Int) {
 
 }

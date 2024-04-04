@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: ViewModel by viewModels()
     private lateinit var navigationSet: Set<Int>
-    private lateinit var navController: NavController
+    lateinit var navController: NavController
 
     // Shared Prefs
     private val PREFS_FILENAME = "my_app_settings"
@@ -36,14 +36,13 @@ class MainActivity : AppCompatActivity() {
         appSettings = getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
         val currentTheme = appSettings.getBoolean(PREFS_THEME, true)
         Log.d("CURRENT THEME", currentTheme.toString())
-        if(currentTheme) {
+        if (currentTheme) {
             setTheme(R.style.Theme_CountingMareep_DARK)
         } else {
             setTheme(R.style.Theme_CountingMareep_LIGHT)
         }
         viewModel.setTheme(currentTheme)
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         navigationSet = setOf(
@@ -61,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         val navDest = appSettings.getInt(PREFS_NAV, -1)
-        if(navDest == -1) {
+        if (navDest == -1) {
             loginRedirect()
         } else {
             navController.navigate(navDest)
@@ -72,7 +71,10 @@ class MainActivity : AppCompatActivity() {
     fun loginRedirect(): Unit {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             // Don't display the back arrow for these
-            if (destination.id == R.id.navigation_splash || navigationSet.contains(destination.id)) {
+            if (destination.id == R.id.navigation_splash
+                || destination.id == R.id.navigation_modify
+                || navigationSet.contains(destination.id)
+            ) {
                 supportActionBar?.setDisplayHomeAsUpEnabled(false)
                 supportActionBar?.setDisplayShowHomeEnabled(false)
             }

@@ -1,5 +1,6 @@
 package com.example.countingmareep
 
+import com.example.countingmareep.ui.box.PokemonData
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -13,5 +14,15 @@ class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
+    }
+
+    @Test
+    fun get_Ids() {
+        val list = PokemonData.pokemon
+        val outList: MutableList<Int> = mutableListOf()
+        for (pokemon in list) {
+            outList.add(pokemon.dexNumber)
+        }
+        print(outList)
     }
 }

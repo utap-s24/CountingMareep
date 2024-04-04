@@ -1,4 +1,4 @@
-package com.example.countingmareep.ui.box
+package com.example.countingmareep.ui.box.modify
 
 enum class Rarity {
     COMMON, // White
@@ -32,7 +32,7 @@ enum class Skills {
     SkillTriggerS
 }
 
-class Skill(id: Skills) {
+class SubSkill(id: Skills) {
     companion object {
         val SKILLS = listOf(
             SkillData(
@@ -121,6 +121,8 @@ class Skill(id: Skills) {
                 "Slightly boosts the chance of this Pokémon's main skill being used by 18%."
             )
         )
+
+        val subSkillNames = SKILLS.map { x -> x.skillName }
     }
 
     private var thisSkill = SKILLS[id.ordinal]

@@ -1,0 +1,180 @@
+package com.example.countingmareep.ui.box
+
+import java.util.Random
+
+enum class PokemonType {
+    GRASS,
+    FIRE,
+    WATER,
+    BUG,
+    NORMAL,
+    POISON,
+    ELECTRIC,
+    FAIRY,
+    GROUND,
+    FIGHTING,
+    ROCK,
+    STEEL,
+    FLYING,
+    GHOST,
+    PSYCHIC,
+    DRAGON,
+    DARK,
+    ICE
+}
+
+data class PokemonBaseData(
+    val name: String,
+    val dexNumber: Int,
+    val type: PokemonType
+)
+
+class PokemonData {
+    companion object {
+        val pokemon = listOf(
+            PokemonBaseData("Bulbasaur", 1, PokemonType.GRASS),
+            PokemonBaseData("Ivysaur", 2, PokemonType.GRASS),
+            PokemonBaseData("Venusaur", 3, PokemonType.GRASS),
+            PokemonBaseData("Charmander", 4, PokemonType.FIRE),
+            PokemonBaseData("Charmeleon", 5, PokemonType.FIRE),
+            PokemonBaseData("Charizard", 6, PokemonType.FIRE),
+            PokemonBaseData("Squirtle", 7, PokemonType.WATER),
+            PokemonBaseData("Wartortle", 8, PokemonType.WATER),
+            PokemonBaseData("Blastoise", 9, PokemonType.WATER),
+            PokemonBaseData("Caterpie", 10, PokemonType.BUG),
+            PokemonBaseData("Metapod", 11, PokemonType.BUG),
+            PokemonBaseData("Butterfree", 12, PokemonType.BUG),
+            PokemonBaseData("Rattata", 19, PokemonType.NORMAL),
+            PokemonBaseData("Raticate", 20, PokemonType.NORMAL),
+            PokemonBaseData("Ekans", 23, PokemonType.POISON),
+            PokemonBaseData("Arbok", 24, PokemonType.POISON),
+            PokemonBaseData("Pikachu", 25, PokemonType.ELECTRIC),
+            PokemonBaseData("Raichu", 26, PokemonType.ELECTRIC),
+            PokemonBaseData("Clefairy", 35, PokemonType.FAIRY),
+            PokemonBaseData("Clefable", 36, PokemonType.FAIRY),
+            PokemonBaseData("Jigglypuff", 39, PokemonType.FAIRY),
+            PokemonBaseData("Wigglytuff", 40, PokemonType.FAIRY),
+            PokemonBaseData("Diglett", 50, PokemonType.GROUND),
+            PokemonBaseData("Dugtrio", 51, PokemonType.GROUND),
+            PokemonBaseData("Meowth", 52, PokemonType.NORMAL),
+            PokemonBaseData("Persian", 53, PokemonType.NORMAL),
+            PokemonBaseData("Psyduck", 54, PokemonType.WATER),
+            PokemonBaseData("Golduck", 55, PokemonType.WATER),
+            PokemonBaseData("Mankey", 56, PokemonType.FIGHTING),
+            PokemonBaseData("Primeape", 57, PokemonType.FIGHTING),
+            PokemonBaseData("Growlithe", 58, PokemonType.FIRE),
+            PokemonBaseData("Arcanine", 59, PokemonType.FIRE),
+            PokemonBaseData("Bellsprout", 69, PokemonType.GRASS),
+            PokemonBaseData("Weepinbell", 70, PokemonType.GRASS),
+            PokemonBaseData("Victreebel", 71, PokemonType.GRASS),
+            PokemonBaseData("Geodude", 74, PokemonType.ROCK),
+            PokemonBaseData("Graveler", 75, PokemonType.ROCK),
+            PokemonBaseData("Golem", 76, PokemonType.ROCK),
+            PokemonBaseData("Slowpoke", 79, PokemonType.WATER),
+            PokemonBaseData("Slowbro", 80, PokemonType.WATER),
+            PokemonBaseData("Magnemite", 81, PokemonType.STEEL),
+            PokemonBaseData("Magneton", 82, PokemonType.STEEL),
+            PokemonBaseData("Doduo", 84, PokemonType.FLYING),
+            PokemonBaseData("Dodrio", 85, PokemonType.FLYING),
+            PokemonBaseData("Ghastly", 92, PokemonType.GHOST),
+            PokemonBaseData("Haunter", 93, PokemonType.GHOST),
+            PokemonBaseData("Gengar", 94, PokemonType.GHOST),
+            PokemonBaseData("Onix", 95, PokemonType.ROCK),
+            PokemonBaseData("Cubone", 104, PokemonType.GROUND),
+            PokemonBaseData("Marowak", 105, PokemonType.GROUND),
+            PokemonBaseData("Kangaskhan", 115, PokemonType.NORMAL),
+            PokemonBaseData("Mr. Mime", 122, PokemonType.PSYCHIC),
+            PokemonBaseData("Pinsir", 127, PokemonType.BUG),
+            PokemonBaseData("Ditto", 132, PokemonType.NORMAL),
+            PokemonBaseData("Eevee", 133, PokemonType.NORMAL),
+            PokemonBaseData("Vaporeon", 134, PokemonType.WATER),
+            PokemonBaseData("Jolteon", 135, PokemonType.ELECTRIC),
+            PokemonBaseData("Flareon", 136, PokemonType.FIRE),
+            PokemonBaseData("Dratini", 147, PokemonType.DRAGON),
+            PokemonBaseData("Dragonair", 148, PokemonType.DRAGON),
+            PokemonBaseData("Dragonite", 149, PokemonType.DRAGON),
+
+            PokemonBaseData("Chikorita", 152, PokemonType.GRASS),
+            PokemonBaseData("Bayleef", 153, PokemonType.GRASS),
+            PokemonBaseData("Meganium", 154, PokemonType.GRASS),
+            PokemonBaseData("Cyndaquil", 155, PokemonType.FIRE),
+            PokemonBaseData("Quilava", 156, PokemonType.FIRE),
+            PokemonBaseData("Typhlosion", 157, PokemonType.FIRE),
+            PokemonBaseData("Totodile", 158, PokemonType.WATER),
+            PokemonBaseData("Croconaw", 159, PokemonType.WATER),
+            PokemonBaseData("Feraligatr", 160, PokemonType.WATER),
+            PokemonBaseData("Pichu", 172, PokemonType.ELECTRIC),
+            PokemonBaseData("Cleffa", 173, PokemonType.FAIRY),
+            PokemonBaseData("Igglybuff", 174, PokemonType.FAIRY),
+            PokemonBaseData("Togepi", 175, PokemonType.FAIRY),
+            PokemonBaseData("Togetic", 176, PokemonType.FAIRY),
+            PokemonBaseData("Mareep", 179, PokemonType.ELECTRIC),
+            PokemonBaseData("Flaffy", 180, PokemonType.ELECTRIC),
+            PokemonBaseData("Ampharos", 181, PokemonType.ELECTRIC),
+            PokemonBaseData("Sudowoodo", 185, PokemonType.ROCK),
+            PokemonBaseData("Espeon", 196, PokemonType.PSYCHIC),
+            PokemonBaseData("Umbreon", 197, PokemonType.DARK),
+            PokemonBaseData("Slowking", 199, PokemonType.WATER),
+
+            PokemonBaseData("Wobbuffet", 202, PokemonType.PSYCHIC),
+            PokemonBaseData("Steelix", 208, PokemonType.STEEL),
+            PokemonBaseData("Heracross", 214, PokemonType.BUG),
+            PokemonBaseData("Delibird", 225, PokemonType.FLYING),
+            PokemonBaseData("Houndour", 228, PokemonType.DARK),
+            PokemonBaseData("Houndoom", 229, PokemonType.DARK),
+            PokemonBaseData("Raikou", 243, PokemonType.ELECTRIC),
+            PokemonBaseData("Larvitar", 246, PokemonType.ROCK),
+            PokemonBaseData("Pupitar", 247, PokemonType.ROCK),
+            PokemonBaseData("Tyranitar", 248, PokemonType.DARK),
+            PokemonBaseData("Ralts", 280, PokemonType.PSYCHIC),
+            PokemonBaseData("Kirlia", 281, PokemonType.PSYCHIC),
+            PokemonBaseData("Gardevoir", 282, PokemonType.PSYCHIC),
+            PokemonBaseData("Slakoth", 287, PokemonType.NORMAL),
+            PokemonBaseData("Vigoroth", 288, PokemonType.NORMAL),
+            PokemonBaseData("Slaking", 289, PokemonType.NORMAL),
+            PokemonBaseData("Sableye", 302, PokemonType.DARK),
+            PokemonBaseData("Gulpin", 316, PokemonType.POISON),
+            PokemonBaseData("Swalot", 317, PokemonType.POISON),
+            PokemonBaseData("Swablu", 333, PokemonType.FLYING),
+            PokemonBaseData("Altaria", 334, PokemonType.DRAGON),
+            PokemonBaseData("Shuppet", 353, PokemonType.GHOST),
+            PokemonBaseData("Banette", 354, PokemonType.GHOST),
+            PokemonBaseData("Absol", 359, PokemonType.DARK),
+            PokemonBaseData("Wynaut", 360, PokemonType.PSYCHIC),
+            PokemonBaseData("Spheal", 363, PokemonType.ICE),
+            PokemonBaseData("Sealeo", 364, PokemonType.ICE),
+            PokemonBaseData("Walrein", 365, PokemonType.ICE),
+            PokemonBaseData("Bonsly", 438, PokemonType.ROCK),
+            PokemonBaseData("Mime Jr.", 439, PokemonType.PSYCHIC),
+            PokemonBaseData("Riolu", 447, PokemonType.FIGHTING),
+            PokemonBaseData("Lucario", 448, PokemonType.FIGHTING),
+            PokemonBaseData("Croagunk", 453, PokemonType.POISON),
+            PokemonBaseData("Toxicroak", 454, PokemonType.POISON),
+            PokemonBaseData("Snover", 459, PokemonType.ICE),
+            PokemonBaseData("Abomasnow", 460, PokemonType.ICE),
+            PokemonBaseData("Magnezone", 462, PokemonType.STEEL),
+            PokemonBaseData("Togekiss", 468, PokemonType.FAIRY),
+            PokemonBaseData("Leafeon", 470, PokemonType.GRASS),
+            PokemonBaseData("Glaceon", 471, PokemonType.ICE),
+            PokemonBaseData("Gallade", 475, PokemonType.FIGHTING),
+            PokemonBaseData("Sylveon", 700, PokemonType.FAIRY),
+            PokemonBaseData("Dedenne", 702, PokemonType.ELECTRIC),
+            PokemonBaseData("Stufful", 759, PokemonType.FIGHTING),
+            PokemonBaseData("Bewear", 760, PokemonType.FIGHTING)
+        )
+
+        val dexList = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 19, 20, 23, 24, 25, 26, 35, 36, 39, 40, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 69, 70, 71, 74, 75, 76, 79, 80, 81, 82, 84, 85, 92, 93, 94, 95, 104, 105, 115, 122, 127, 132, 133, 134, 135, 136, 147, 148, 149, 152, 153, 154, 155, 156, 157, 158, 159, 160, 172, 173, 174, 175, 176, 179, 180, 181, 185, 196, 197, 199, 202, 208, 214, 225, 228, 229, 243, 246, 247, 248, 280, 281, 282, 287, 288, 289, 302, 316, 317, 333, 334, 353, 354, 359, 360, 363, 364, 365, 438, 439, 447, 448, 453, 454, 459, 460, 462, 468, 470, 471, 475, 700, 702, 759, 760)
+
+        val nameList: List<String> = listOf(
+            "Bulbasaur", "Ivysaur", "Venusaur", "Charmander", "Charmeleon", "Charizard", "Squirtle", "Wartortle", "Blastoise", "Caterpie", "Metapod", "Butterfree", "Rattata", "Raticate", "Ekans", "Arbok", "Pikachu", "Raichu", "Clefairy", "Clefable", "Jigglypuff", "Wigglytuff", "Diglett", "Dugtrio", "Meowth", "Persian", "Psyduck", "Golduck", "Mankey", "Primeape", "Growlithe", "Arcanine", "Bellsprout", "Weepinbell", "Victreebel", "Geodude", "Graveler", "Golem", "Slowpoke", "Slowbro", "Magnemite", "Magneton", "Doduo", "Dodrio", "Gastly", "Haunter", "Gengar", "Onix", "Cubone", "Marowak", "Kangaskhan", "Mr. Mime", "Pinsir", "Ditto", "Eevee", "Vaporeon", "Jolteon", "Flareon", "Dratini", "Dragonair", "Dragonite", "Chikorita", "Bayleef", "Meganium", "Cyndaquil", "Quilava", "Typhlosion", "Totodile", "Croconaw", "Feraligatr", "Pichu", "Cleffa", "Igglybuff", "Togepi", "Togetic", "Mareep", "Flaaffy", "Ampharos", "Sudowoodo", "Espeon", "Umbreon", "Slowking", "Wobbuffet", "Steelix", "Heracross", "Delibird", "Houndour", "Houndoom", "Raikou", "Larvitar", "Pupitar", "Tyranitar", "Ralts", "Kirlia", "Gardevoir", "Slakoth", "Vigoroth", "Slaking", "Sableye", "Gulpin", "Swalot", "Swablu", "Altaria", "Shuppet", "Banette", "Absol", "Wynaut", "Spheal", "Sealeo", "Walrein", "Bonsly", "Mime Jr.", "Riolu", "Lucario", "Croagunk", "Toxicroak", "Snover", "Abomasnow", "Magnezone", "Togekiss", "Leafeon", "Glaceon", "Gallade", "Sylveon", "Dedenne", "Stufful", "Bewear"
+        )
+        fun getByDex(id: Int): PokemonBaseData {
+            return pokemon[dexList.indexOf(id)]
+        }
+
+        fun getRandom(): PokemonBaseData {
+            val rand = Random()
+            return pokemon[rand.nextInt(pokemon.size)]
+        }
+    }
+}

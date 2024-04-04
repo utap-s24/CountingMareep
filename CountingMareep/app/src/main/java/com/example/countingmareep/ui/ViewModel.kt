@@ -1,18 +1,13 @@
 package com.example.countingmareep
 
 import PokemonDataModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.countingmareep.ui.box.Ingredient
 import com.example.countingmareep.ui.box.Ingredients
 import com.example.countingmareep.ui.box.Nature
-import com.example.countingmareep.ui.box.Skill
-import com.example.countingmareep.ui.box.Skills
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.example.countingmareep.ui.box.PokemonData
+import com.example.countingmareep.ui.box.modify.SubSkill
+import com.example.countingmareep.ui.box.modify.Skills
 import java.util.Random
 
 class ViewModel : ViewModel() {
@@ -29,13 +24,14 @@ class ViewModel : ViewModel() {
     fun getDataList(): List<PokemonDataModel> {
         val outList: MutableList<PokemonDataModel> = mutableListOf()
         val rand = Random()
-        for (i in 1..50) {
+        for (pokemon in PokemonData.pokemon) {
             outList.add(PokemonDataModel(
-                "Barry", rand.nextInt(50), 26,
-                listOf(Skill(Skills.BerryFindingS)),
+                pokemon.name, rand.nextInt(50), pokemon.dexNumber,
+                listOf(SubSkill(Skills.BerryFindingS)),
                 listOf(Ingredient(Ingredients.FANCY_APPLE, 1)),
-                Nature(),
-                rand.nextInt(3000)
+                Nature.getRandom(),
+                rand.nextInt(3000),
+                2
             ))
         }
 

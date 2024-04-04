@@ -41,4 +41,10 @@
         android:name="com.example.countingmareep.ui.splash.CreateFragment"
         android:label="Create Account"
         tools:layout="@layout/fragment_create" />
+
+    <fragment
+        android:id="@+id/navigation_modify"
+        android:name="com.example.countingmareep.ui.box.modify.ModifyFragment"
+        android:label="Modify"
+        tools:layout="@layout/fragment_modify_pokemon" />
 </navigation>

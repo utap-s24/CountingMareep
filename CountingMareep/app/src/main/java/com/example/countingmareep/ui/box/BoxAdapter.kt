@@ -1,24 +1,29 @@
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.countingmareep.R
+import com.example.countingmareep.MainActivity
 import com.example.countingmareep.databinding.CardLayoutBinding
 import com.example.countingmareep.ui.box.Ingredient
-import com.example.countingmareep.ui.box.Nature
-import com.example.countingmareep.ui.box.Skill
+import com.example.countingmareep.ui.box.NatureData
+import com.example.countingmareep.ui.box.modify.SubSkill
+import java.io.IOException
+import java.io.InputStream
+
 
 // Define your data model class
 data class PokemonDataModel(
     val name: String,
     val level: Int,
     val pokedexEntry: Int,
-    val subSkills: List<Skill>,
+    val subSkills: List<SubSkill>,
     val ingredients: List<Ingredient>,
-    val nature: Nature,
-    val RP: Int
+    val nature: NatureData,
+    val RP: Int,
+    val mainSkillLevel: Int
 )
 
-class BoxAdapter(private var dataList: List<PokemonDataModel>) :
+class BoxAdapter(private var dataList: List<PokemonDataModel>, private var mainActivity: MainActivity) :
     RecyclerView.Adapter<BoxAdapter.ViewHolder>() {
 
     fun submitList(newList: List<PokemonDataModel>) {
@@ -36,7 +41,14 @@ class BoxAdapter(private var dataList: List<PokemonDataModel>) :
         val binding = holder.cardBinding
         binding.pokemonNicknameTV.text = item.name
         binding.pokemonLevelTV.text = item.level.toString()
-        // TODO: Image
+        try {
+            val ims: InputStream = mainActivity.assets.open("pokemon/${item.pokedexEntry}.png")
+            val d = Drawable.createFromStream(ims, null)
+            binding.pokemonImage.setImageDrawable(d)
+            ims.close()
+        } catch (ex: IOException) {
+            return
+        }
     }
 
     override fun getItemCount(): Int {
