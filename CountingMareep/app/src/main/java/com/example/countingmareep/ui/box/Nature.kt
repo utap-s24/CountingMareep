@@ -69,6 +69,10 @@ class Nature {
             "Serious"
         )
 
+        fun natureFromIndex(index: Int): NatureData {
+            return natures[index]
+        }
+
         fun natureFromName(natureName: String): NatureData {
             return natures[natureNames.indexOf(natureName)]
         }

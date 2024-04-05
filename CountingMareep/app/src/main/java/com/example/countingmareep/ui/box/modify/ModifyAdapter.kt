@@ -19,7 +19,7 @@ class ModifyAdapter(
     private var mainActivity: MainActivity
 ) :
     RecyclerView.Adapter<ModifyAdapter.ViewHolder>() {
-    private var selected = 0;
+    var selected = 0;
     private var originalColor: ColorStateList? = null
 
     fun submitList(newList: List<PokemonBaseData>) {
@@ -43,7 +43,7 @@ class ModifyAdapter(
         } catch (ex: IOException) {
             return
         }
-        if(originalColor == null) {
+        if (originalColor == null) {
             originalColor = binding.root.cardBackgroundColor
         }
         if (selected == position) {

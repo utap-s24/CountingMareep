@@ -123,6 +123,10 @@ class SubSkill(id: Skills) {
         )
 
         val subSkillNames = SKILLS.map { x -> x.skillName }
+
+        fun fromIndex(index: Int): SubSkill {
+            return SubSkill(Skills.entries[index])
+        }
     }
 
     private var thisSkill = SKILLS[id.ordinal]
