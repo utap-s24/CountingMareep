@@ -1,5 +1,6 @@
 package com.example.countingmareep.ui.settings
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.countingmareep.MainActivity
 import com.example.countingmareep.ViewModel
 import com.example.countingmareep.databinding.FragmentSettingsBinding
+import java.io.IOException
+import java.io.InputStream
 
 class SettingsFragment : Fragment() {
     companion object {
@@ -40,6 +43,15 @@ class SettingsFragment : Fragment() {
         binding.themeToggle.isChecked = viewModel.isDark()
         binding.themeToggle.setOnCheckedChangeListener { _, isChecked ->
             setThemeFromSwitch(isChecked)
+        }
+
+        val mainActivity = activity as MainActivity
+        try {
+            val ims: InputStream = mainActivity.assets.open("icons/${viewModel.getIcon()}.png")
+            val d = Drawable.createFromStream(ims, null)
+            binding.settingsImage.setImageDrawable(d)
+            ims.close()
+        } catch (ex: IOException) {
         }
 
         return root

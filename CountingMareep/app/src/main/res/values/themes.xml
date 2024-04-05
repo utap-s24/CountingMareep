@@ -23,7 +23,7 @@
         <item name="inputBorder">@color/dark_gray</item>
         <item name="buttonTextAlt">@color/white</item>
         <item name="colorTertiary">@color/black</item>
-        <item name="contrastMid">#CCCCCC</item>
+        <item name="contrastMid">#BBBBBB</item>
     </style>
 
     <style name="Theme.CountingMareep.DARK" parent="Theme.AppCompat.DayNight.DarkActionBar">

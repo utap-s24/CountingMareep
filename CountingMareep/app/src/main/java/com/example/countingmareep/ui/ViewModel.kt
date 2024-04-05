@@ -12,6 +12,7 @@ import java.util.Random
 
 class ViewModel : ViewModel() {
     private var themeIsDark: Boolean = false
+    private var userIcon: Int = 243
     private val pokemonList: MutableList<PokemonDataModel> = mutableListOf(
         PokemonDataModel(
             "Garry",
@@ -61,5 +62,9 @@ class ViewModel : ViewModel() {
 //            ))
 //        }
         return pokemonList
+    }
+
+    fun getIcon(): Int {
+        return userIcon
     }
 }
