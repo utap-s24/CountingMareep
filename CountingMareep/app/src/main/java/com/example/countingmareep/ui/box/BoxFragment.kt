@@ -55,7 +55,7 @@ class BoxFragment : Fragment() {
         // Get Data
         dataList = viewModel.getDataList().sortedBy { it.RP }
         // Create Adapter
-        adapter = BoxAdapter(dataList, mainActivity)
+        adapter = BoxAdapter(dataList, mainActivity, viewModel)
         recyclerView.adapter = adapter
 
         binding.ascDescButton.setOnClickListener {
