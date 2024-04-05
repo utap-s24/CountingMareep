@@ -15,6 +15,7 @@
         <item name="inputBorder">@color/purple_700</item>
         <item name="buttonTextAlt">@color/purple_700</item>
         <item name="colorTertiary">@color/purple_700</item>
+        <item name="rpText">#DD0000</item>
     </style>
 
     <style name="Theme.CountingMareep.LIGHT" parent="Theme.AppCompat.Light.DarkActionBar">

@@ -30,21 +30,25 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
-                android:orientation="horizontal">
-
+                android:orientation="horizontal"
+                android:gravity="center">
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/level"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Nickname: "
-                    android:textSize="18dp" />
-
+                    android:textAlignment="center"
+                    android:text="Lv. 25"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="20dp"
+                    android:textColor="?attr/colorSecondary"/>
                 <TextView
                     android:id="@+id/nickname"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="" />
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:text="Blaster" />
             </LinearLayout>
 
             <LinearLayout
@@ -54,20 +58,6 @@
                 android:layout_marginEnd="30dp"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Level: "
-                    android:textSize="18dp" />
-
-                <TextView
-                    android:id="@+id/level"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:inputType="number"
-                    android:text="" />
             </LinearLayout>
 
             <LinearLayout
@@ -77,18 +67,20 @@
                 android:layout_marginEnd="30dp">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="RP: "
-                    android:textSize="18dp" />
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="20dp"
+                    android:textColor="?attr/rpText"/>
 
                 <TextView
                     android:id="@+id/rp"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:inputType="number"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
                     android:text="" />
             </LinearLayout>
 
@@ -127,13 +119,11 @@
                     android:text="Nature: "
                     android:textSize="18dp" />
 
-                <androidx.appcompat.widget.AppCompatSpinner
-                    android:id="@+id/natureInput"
+                <TextView
+                    android:id="@+id/nature"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:hint="Bold"
-                    android:spinnerMode="dialog"
                     android:text="" />
             </LinearLayout>
 
@@ -159,10 +149,11 @@
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
-                    <androidx.appcompat.widget.AppCompatSpinner
+                    <ImageView
                         android:id="@+id/ingredient1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_profile"
                         android:background="@drawable/rounded_background"
                         android:backgroundTint="?attr/contrastMid"
                         android:text="" />
@@ -189,18 +180,21 @@
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
-                    <androidx.appcompat.widget.AppCompatSpinner
+                    <ImageView
                         android:id="@+id/ingredient2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_profile"
                         android:background="@drawable/rounded_background"
                         android:backgroundTint="?attr/contrastMid"
                         android:text="" />
 
-                    <androidx.appcompat.widget.AppCompatSpinner
+                    <TextView
                         android:id="@+id/ingredient2Multiplier"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="x1"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -216,18 +210,21 @@
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
-                    <androidx.appcompat.widget.AppCompatSpinner
+                    <ImageView
                         android:id="@+id/ingredient3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_profile"
                         android:background="@drawable/rounded_background"
                         android:backgroundTint="?attr/contrastMid"
                         android:text="" />
 
-                    <androidx.appcompat.widget.AppCompatSpinner
+                    <TextView
                         android:id="@+id/ingredient3Multiplier"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="x1"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -250,7 +247,7 @@
                     android:layout_columnWeight="1"
                     android:layout_margin="2dp">
 
-                    <androidx.appcompat.widget.AppCompatSpinner
+                    <TextView
                         android:id="@+id/subSkill1"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
@@ -258,8 +255,6 @@
                         android:autoSizeMinTextSize="10sp"
                         android:autoSizeTextType="uniform"
                         android:background="@drawable/subskills"
-                        android:hint="Research EXP Bonus"
-                        android:spinnerMode="dialog"
                         android:text=""
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -272,7 +267,7 @@
                     android:layout_columnWeight="1"
                     android:layout_margin="2dp">
 
-                    <androidx.appcompat.widget.AppCompatSpinner
+                    <TextView
                         android:id="@+id/subSkill2"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
@@ -280,8 +275,6 @@
                         android:autoSizeMinTextSize="10sp"
                         android:autoSizeTextType="uniform"
                         android:background="@drawable/subskills"
-                        android:hint="Research EXP Bonus"
-                        android:spinnerMode="dialog"
                         android:text=""
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -294,7 +287,7 @@
                     android:layout_columnWeight="1"
                     android:layout_margin="2dp">
 
-                    <androidx.appcompat.widget.AppCompatSpinner
+                    <TextView
                         android:id="@+id/subSkill3"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
@@ -302,8 +295,6 @@
                         android:autoSizeMinTextSize="10sp"
                         android:autoSizeTextType="uniform"
                         android:background="@drawable/subskills"
-                        android:hint="Research EXP Bonus"
-                        android:spinnerMode="dialog"
                         android:text=""
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -316,7 +307,7 @@
                     android:layout_columnWeight="1"
                     android:layout_margin="2dp">
 
-                    <androidx.appcompat.widget.AppCompatSpinner
+                    <TextView
                         android:id="@+id/subSkill4"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
@@ -324,8 +315,6 @@
                         android:autoSizeMinTextSize="10sp"
                         android:autoSizeTextType="uniform"
                         android:background="@drawable/subskills"
-                        android:hint="Research EXP Bonus"
-                        android:spinnerMode="dialog"
                         android:text=""
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -339,7 +328,7 @@
                 android:layout_marginTop="2dp"
                 android:layout_marginEnd="75dp">
 
-                <androidx.appcompat.widget.AppCompatSpinner
+                <TextView
                     android:id="@+id/subSkill5"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -347,8 +336,6 @@
                     android:autoSizeMinTextSize="10sp"
                     android:autoSizeTextType="uniform"
                     android:background="@drawable/subskills"
-                    android:hint="Research EXP Bonus"
-                    android:spinnerMode="dialog"
                     android:text=""
                     android:textSize="12sp" />
             </LinearLayout>

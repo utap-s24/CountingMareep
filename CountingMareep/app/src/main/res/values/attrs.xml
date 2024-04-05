@@ -3,4 +3,5 @@
     <attr name="inputBorder" format="color" />
     <attr name="buttonTextAlt" format="color" />
     <attr name="contrastMid" format="color" />
+    <attr name="rpText" format="color"/>
 </resources>

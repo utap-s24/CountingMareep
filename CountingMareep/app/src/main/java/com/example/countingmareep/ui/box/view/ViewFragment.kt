@@ -23,6 +23,7 @@ import com.example.countingmareep.ui.box.Ingredient
 import com.example.countingmareep.ui.box.Ingredients
 import com.example.countingmareep.ui.box.Nature
 import com.example.countingmareep.ui.box.PokemonData
+import com.example.countingmareep.ui.box.modify.Rarity
 import java.io.IOException
 import java.io.InputStream
 
@@ -58,7 +59,47 @@ class ViewFragment : Fragment() {
         }
         binding.nickname.text = selectedPokemon.name
         binding.rp.text = selectedPokemon.RP.toString()
-        binding.level.text = selectedPokemon.level.toString()
+        binding.level.text = "Lv. ${selectedPokemon.level.toString()}"
+        binding.skillLevel.text = selectedPokemon.mainSkillLevel.toString()
+        binding.nature.text = selectedPokemon.nature.nature
+
+        val subSkillList = listOf(binding.subSkill1, binding.subSkill2, binding.subSkill3, binding.subSkill4, binding.subSkill5)
+        var index = 0
+        for(subSkill in subSkillList) {
+            val skill = selectedPokemon.subSkills[index]
+            subSkill.text = skill.getName()
+            if (skill.getRarity() == Rarity.VERY_RARE) {
+                subSkill.setBackgroundResource(R.drawable.subskills)
+            } else if (skill.getRarity() == Rarity.RARE) {
+                subSkill.setBackgroundResource(R.drawable.subskillsrare)
+            } else if (skill.getRarity() == Rarity.COMMON) {
+                subSkill.setBackgroundResource(R.drawable.subskillscommon)
+            }
+            index++
+        }
+
+        val ingredientList = listOf(binding.ingredient1, binding.ingredient2, binding.ingredient3)
+        index = 0
+        for(ingredientBinding in ingredientList) {
+            val ingredient = selectedPokemon.ingredients[index]
+            try {
+                mainActivity.assets.open("ingredients/${ingredient.id.name.lowercase().replace("_", "")}.png").use { inputStream ->
+                    val drawable = Drawable.createFromStream(inputStream, null)
+                    ingredientBinding.setImageDrawable(drawable)
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+            index++
+        }
+
+        index = 0
+        val ingredientCountList = listOf(binding.ingredient1Multiplier, binding.ingredient2Multiplier, binding.ingredient3Multiplier)
+        for(ingredientCountBinding in ingredientCountList) {
+            val ingredient = selectedPokemon.ingredients[index]
+            ingredientCountBinding.text = "x${ingredient.quantity.toString()}"
+            index++
+        }
 
         return root
     }
