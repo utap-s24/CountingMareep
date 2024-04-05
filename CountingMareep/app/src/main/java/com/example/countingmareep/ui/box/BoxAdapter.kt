@@ -3,6 +3,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.countingmareep.MainActivity
+import com.example.countingmareep.R
+import com.example.countingmareep.ViewModel
 import com.example.countingmareep.databinding.CardLayoutBinding
 import com.example.countingmareep.ui.box.Ingredient
 import com.example.countingmareep.ui.box.NatureData
@@ -23,7 +25,11 @@ data class PokemonDataModel(
     val mainSkillLevel: Int
 )
 
-class BoxAdapter(private var dataList: List<PokemonDataModel>, private var mainActivity: MainActivity) :
+class BoxAdapter(
+    private var dataList: List<PokemonDataModel>,
+    private var mainActivity: MainActivity,
+    private var viewModel: ViewModel
+) :
     RecyclerView.Adapter<BoxAdapter.ViewHolder>() {
 
     fun submitList(newList: List<PokemonDataModel>) {
@@ -62,15 +68,17 @@ class BoxAdapter(private var dataList: List<PokemonDataModel>, private var mainA
 
         init {
             cardBinding.root.setOnClickListener {
-                currentPosition.takeIf { it != RecyclerView.NO_POSITION }?.let { position ->
-                    // Click Event Handle
-    //                val position = getPos(this)
-    //                // Toggle Favorite
-    //                val local = viewModel.getFavoriteAt(position)
-    //                local.let {
-    //
-    //              }
-                }
+                viewModel.setSelectedBox(adapterPosition)
+                mainActivity.navController.navigate(R.id.navigation_view)
+//                currentPosition.takeIf { it != RecyclerView.NO_POSITION }?.let { position ->
+//                    // Click Event Handle
+//    //                val position = getPos(this)
+//    //                // Toggle Favorite
+//    //                val local = viewModel.getFavoriteAt(position)
+//    //                local.let {
+//    //
+//    //              }
+//                }
             }
         }
     }
