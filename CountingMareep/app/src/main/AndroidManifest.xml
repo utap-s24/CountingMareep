@@ -16,6 +16,7 @@
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.CountingMareep"
+            android:windowSoftInputMode="adjustPan"
             android:configChanges="uiMode">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

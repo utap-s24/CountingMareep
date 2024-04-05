@@ -30,7 +30,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+
     <!-- Main Pokemon preview -->
+
+    <Button
+        android:id="@+id/button_edit_team"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="32dp"
+        android:background="@drawable/rounded_corners_red"
+        android:rotation="10"
+        android:textSize="10sp"
+        android:text="Edit Team"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/text_total_team_rp"
+        app:layout_constraintStart_toEndOf="@+id/text_total_team_rp"
+        app:layout_constraintTop_toTopOf="@+id/text_total_team_rp"
+        app:layout_constraintVertical_bias="0.0"
+        />
+
     <ImageView
         android:id="@+id/image_pokemon_main"
         android:layout_width="250dp"
@@ -50,7 +68,35 @@
         app:layout_constraintStart_toStartOf="@+id/image_pokemon_main"
         app:layout_constraintEnd_toEndOf="@+id/image_pokemon_main" />
 
-    <!-- Example for one of the four smaller previews -->
+    <!-- Pokemon previews -->
+    <EditText
+        android:id="@+id/edit_team_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corners"
+        android:layout_margin="10dp"
+        android:text="Your Team"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="@id/image_pokemon_main"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/image_pokemon_main"
+        app:layout_constraintTop_toBottomOf="@id/text_pokemon_main_details" />
+
+    <View
+        android:id="@+id/view_pokemon_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#dadada"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="@id/image_pokemon_preview_1"
+        app:layout_constraintEnd_toEndOf="@id/image_pokemon_preview_4"
+        app:layout_constraintTop_toBottomOf="@id/edit_team_name"
+        app:layout_constraintBottom_toBottomOf="@id/text_pokemon_preview_4_details"
+        android:layout_marginStart="-35dp"
+        android:layout_marginEnd="-35dp"
+        android:layout_marginBottom="-20dp" />
+
 
     <ImageView
         android:id="@+id/image_pokemon_preview_1"
@@ -60,7 +106,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/image_pokemon_main"
-        app:layout_constraintTop_toBottomOf="@+id/text_pokemon_main_details" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_team_name" />
 
     <TextView
         android:id="@+id/text_pokemon_preview_1_details"
@@ -80,7 +126,7 @@
         android:layout_marginTop="16dp"
         app:layout_constraintHorizontal_bias="0.367"
         app:layout_constraintEnd_toEndOf="@id/image_pokemon_main"
-        app:layout_constraintTop_toBottomOf="@+id/text_pokemon_main_details" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_team_name" />
 
     <TextView
         android:id="@+id/text_pokemon_preview_2_details"
