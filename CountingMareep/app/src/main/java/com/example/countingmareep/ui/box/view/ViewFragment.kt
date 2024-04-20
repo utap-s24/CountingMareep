@@ -108,10 +108,28 @@ class ViewFragment : Fragment() {
         }
 
         binding.saveButton.setOnClickListener {
-            selectedPokemon.level = binding.level.text.toString().toInt()
-            selectedPokemon.name = binding.nickname.text.toString()
-            selectedPokemon.mainSkillLevel = binding.skillLevelInput.text.toString().toInt()
-            selectedPokemon.RP = binding.rp.text.toString().toInt()
+            val levelStr = binding.level.text.toString()
+            val rpStr = binding.rp.text.toString()
+            val skillLevelStr = binding.skillLevelInput.text.toString()
+            val nameStr = binding.nickname.text.toString()
+            if(levelStr.isEmpty() || rpStr.isEmpty() || skillLevelStr.isEmpty() || nameStr.isEmpty()) {
+                Toast.makeText(mainActivity, "Unfilled Value", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            // Check Numbers
+            val level = levelStr.toInt()
+            val RP = rpStr.toInt()
+            val skillLevel = skillLevelStr.toInt()
+            if (level <= 0 || level > 100 || RP <= 0 || skillLevel <= 0) {
+                Toast.makeText(mainActivity, "Some Value is Out of Bounds", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            // All Good
+            selectedPokemon.level = level
+            selectedPokemon.name = nameStr
+            selectedPokemon.mainSkillLevel = skillLevel
+            selectedPokemon.RP = RP
+            // Get back to Box View
             mainActivity.navController.popBackStack()
         }
 

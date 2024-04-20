@@ -16,6 +16,7 @@ class ViewModel : ViewModel() {
     companion object {
         val POKEMON_AMOUNT: Int = PokemonData.pokemon.size
     }
+
     private var themeIsDark: Boolean = false
     private var userIcon: Int = 243
     private var userRank: Int = 1
@@ -97,8 +98,8 @@ class ViewModel : ViewModel() {
 
     fun setSelectedBox(uuid: String) {
         var index = 0
-        for(pokemon in pokemonList) {
-            if(pokemon.pokemonID == uuid) {
+        for (pokemon in pokemonList) {
+            if (pokemon.pokemonID == uuid) {
                 selectedBoxPokemon = index
                 break
             }
@@ -126,12 +127,24 @@ class ViewModel : ViewModel() {
         return userRank
     }
 
+    fun setRank(rank: Int) {
+        userRank = rank
+    }
+
     fun getBefriended(): Int {
         return userBefriended
     }
 
+    fun setBefriended(friended: Int) {
+        userBefriended = friended
+    }
+
     fun getHoursSlept(): Int {
         return hoursSlept
+    }
+
+    fun setHoursSlept(hours: Int) {
+        hoursSlept = hours
     }
 
     fun addTeam(team: PokemonTeam) {
