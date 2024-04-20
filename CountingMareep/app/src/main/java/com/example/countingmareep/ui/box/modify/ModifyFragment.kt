@@ -21,6 +21,7 @@ import com.example.countingmareep.ui.box.Ingredient
 import com.example.countingmareep.ui.box.Ingredients
 import com.example.countingmareep.ui.box.Nature
 import com.example.countingmareep.ui.box.PokemonData
+import java.util.UUID
 
 class ModifyFragment : Fragment() {
     companion object {
@@ -83,7 +84,8 @@ class ModifyFragment : Fragment() {
                 ingredients,
                 nature,
                 RP,
-                skillLevel
+                skillLevel,
+                UUID.randomUUID().toString()
             )
 
             viewModel.addPokemon(newMon)

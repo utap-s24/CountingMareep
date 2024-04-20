@@ -15,14 +15,15 @@ import java.io.InputStream
 
 // Define your data model class
 data class PokemonDataModel(
-    val name: String,
-    val level: Int,
+    var name: String,
+    var level: Int,
     val pokedexEntry: Int,
     val subSkills: List<SubSkill>,
     val ingredients: List<Ingredient>,
     val nature: NatureData,
-    val RP: Int,
-    val mainSkillLevel: Int
+    var RP: Int,
+    var mainSkillLevel: Int,
+    val pokemonID: String
 )
 
 class BoxAdapter(
@@ -68,17 +69,8 @@ class BoxAdapter(
 
         init {
             cardBinding.root.setOnClickListener {
-                viewModel.setSelectedBox(adapterPosition)
+                viewModel.setSelectedBox(dataList[adapterPosition].pokemonID)
                 mainActivity.navController.navigate(R.id.navigation_view)
-//                currentPosition.takeIf { it != RecyclerView.NO_POSITION }?.let { position ->
-//                    // Click Event Handle
-//    //                val position = getPos(this)
-//    //                // Toggle Favorite
-//    //                val local = viewModel.getFavoriteAt(position)
-//    //                local.let {
-//    //
-//    //              }
-//                }
             }
         }
     }

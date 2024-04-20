@@ -18,6 +18,7 @@ import com.example.countingmareep.ui.box.Ingredient
 import com.example.countingmareep.ui.box.Ingredients
 import java.io.IOException
 import java.util.Random
+import java.util.UUID
 
 class TeamBuilderFragment : Fragment() {
 
@@ -77,7 +78,8 @@ class TeamBuilderFragment : Fragment() {
             ingredients = ingredients,
             nature = nature,
             RP = rp,
-            mainSkillLevel = mainSkillLevel
+            mainSkillLevel = mainSkillLevel,
+            pokemonID = UUID.randomUUID().toString()
         )
     }
     

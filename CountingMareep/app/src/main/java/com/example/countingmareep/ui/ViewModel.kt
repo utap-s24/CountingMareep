@@ -8,11 +8,20 @@ import com.example.countingmareep.ui.box.Nature
 import com.example.countingmareep.ui.box.PokemonData
 import com.example.countingmareep.ui.box.modify.SubSkill
 import com.example.countingmareep.ui.box.modify.Skills
+import com.example.countingmareep.ui.team_builder.PokemonTeam
 import java.util.Random
+import java.util.UUID
 
 class ViewModel : ViewModel() {
+    companion object {
+        val POKEMON_AMOUNT: Int = PokemonData.pokemon.size
+    }
     private var themeIsDark: Boolean = false
     private var userIcon: Int = 243
+    private var userRank: Int = 1
+    private var userBefriended: Int = 50
+    private var hoursSlept: Int = 1876 // Hours
+
     private var selectedBoxPokemon: Int = -1
     private val pokemonList: MutableList<PokemonDataModel> = mutableListOf(
         PokemonDataModel(
@@ -33,7 +42,8 @@ class ViewModel : ViewModel() {
             ),
             Nature.natureFromName("Bold"),
             3075,
-            2
+            2,
+            UUID.randomUUID().toString()
         ),
         PokemonDataModel(
             "Mellow",
@@ -53,7 +63,8 @@ class ViewModel : ViewModel() {
             ),
             Nature.natureFromName("Sassy"),
             2306,
-            5
+            5,
+            UUID.randomUUID().toString()
         ),
         PokemonDataModel(
             "Blaster",
@@ -73,16 +84,26 @@ class ViewModel : ViewModel() {
             ),
             Nature.natureFromName("Mild"),
             2177,
-            3
+            3,
+            UUID.randomUUID().toString()
         )
     )
 
-    fun setTheme(isDark: Boolean): Unit {
+    private val teamsList: MutableList<PokemonTeam> = mutableListOf()
+
+    fun setTheme(isDark: Boolean) {
         themeIsDark = isDark
     }
 
-    fun setSelectedBox(index: Int): Unit {
-        selectedBoxPokemon = index
+    fun setSelectedBox(uuid: String) {
+        var index = 0
+        for(pokemon in pokemonList) {
+            if(pokemon.pokemonID == uuid) {
+                selectedBoxPokemon = index
+                break
+            }
+            index++
+        }
     }
 
     fun getSelectedBox(): Int {
@@ -93,24 +114,32 @@ class ViewModel : ViewModel() {
         return themeIsDark
     }
 
-    fun addPokemon(pokemon: PokemonDataModel): Unit {
+    fun addPokemon(pokemon: PokemonDataModel) {
         pokemonList.add(pokemon)
     }
 
     fun getDataList(): List<PokemonDataModel> {
-//        val outList: MutableList<PokemonDataModel> = mutableListOf()
-//        val rand = Random()
-//        for (pokemon in PokemonData.pokemon) {
-//            outList.add(PokemonDataModel(
-//                pokemon.name, rand.nextInt(50), pokemon.dexNumber,
-//                listOf(SubSkill(Skills.BerryFindingS)),
-//                listOf(Ingredient(Ingredients.FANCY_APPLE, 1)),
-//                Nature.getRandom(),
-//                rand.nextInt(3000),
-//                2
-//            ))
-//        }
         return pokemonList
+    }
+
+    fun getRank(): Int {
+        return userRank
+    }
+
+    fun getBefriended(): Int {
+        return userBefriended
+    }
+
+    fun getHoursSlept(): Int {
+        return hoursSlept
+    }
+
+    fun addTeam(team: PokemonTeam) {
+        teamsList.add(team)
+    }
+
+    fun getTeamCount(): Int {
+        return teamsList.size
     }
 
     fun getIcon(): Int {

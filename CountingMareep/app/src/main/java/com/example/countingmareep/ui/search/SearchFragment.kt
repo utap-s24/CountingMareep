@@ -19,6 +19,7 @@ import com.example.countingmareep.ui.box.Nature
 import com.example.countingmareep.ui.box.PokemonData
 import com.example.countingmareep.ui.box.modify.SubSkill
 import java.util.Random
+import java.util.UUID
 
 class SearchFragment : Fragment() {
     companion object {
@@ -116,7 +117,8 @@ class SearchFragment : Fragment() {
             ingredients = ingredients,
             nature = nature,
             RP = rp,
-            mainSkillLevel = mainSkillLevel
+            mainSkillLevel = mainSkillLevel,
+            pokemonID = UUID.randomUUID().toString()
         )
     }
 

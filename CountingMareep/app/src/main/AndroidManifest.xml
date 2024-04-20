@@ -17,7 +17,8 @@
             android:label="@string/app_name"
             android:theme="@style/Theme.CountingMareep"
             android:windowSoftInputMode="adjustPan"
-            android:configChanges="uiMode">
+            android:configChanges="uiMode"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

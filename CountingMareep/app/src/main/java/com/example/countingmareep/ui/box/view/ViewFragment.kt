@@ -57,11 +57,17 @@ class ViewFragment : Fragment() {
             ims.close()
         } catch (ex: IOException) {
         }
-        binding.nickname.text = selectedPokemon.name
-        binding.rp.text = selectedPokemon.RP.toString()
-        binding.level.text = "Lv. ${selectedPokemon.level.toString()}"
-        binding.skillLevel.text = selectedPokemon.mainSkillLevel.toString()
-        binding.nature.text = selectedPokemon.nature.nature
+        binding.nickname.setText(selectedPokemon.name)
+        binding.rp.setText(selectedPokemon.RP.toString())
+        binding.level.setText(selectedPokemon.level.toString())
+        binding.skillLevelInput.setText(selectedPokemon.mainSkillLevel.toString())
+        // Nature
+        val nature = selectedPokemon.nature
+        binding.nature.text = nature.nature
+        binding.natureUpText.text = nature.fieldUp
+        binding.natureUpPercent.text = "+${nature.fieldUpAmount}%"
+        binding.natureDownText.text = nature.fieldDown
+        binding.natureDownPercent.text = "+${nature.fieldDownAmount}%"
 
         val subSkillList = listOf(binding.subSkill1, binding.subSkill2, binding.subSkill3, binding.subSkill4, binding.subSkill5)
         var index = 0
@@ -99,6 +105,14 @@ class ViewFragment : Fragment() {
             val ingredient = selectedPokemon.ingredients[index]
             ingredientCountBinding.text = "x${ingredient.quantity.toString()}"
             index++
+        }
+
+        binding.saveButton.setOnClickListener {
+            selectedPokemon.level = binding.level.text.toString().toInt()
+            selectedPokemon.name = binding.nickname.text.toString()
+            selectedPokemon.mainSkillLevel = binding.skillLevelInput.text.toString().toInt()
+            selectedPokemon.RP = binding.rp.text.toString().toInt()
+            mainActivity.navController.popBackStack()
         }
 
         return root

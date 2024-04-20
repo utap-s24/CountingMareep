@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,16 +12,19 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical">
+
         <ImageView
             android:id="@+id/pokemonImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_profile"/>
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_profile" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3"
+            android:layout_weight="4"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
@@ -30,25 +33,39 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
-                android:orientation="horizontal"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="horizontal">
+
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lv. "
+                    android:textAlignment="center"
+                    android:textColor="?attr/colorSecondary"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <EditText
                     android:id="@+id/level"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:text="Lv. 25"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
                     android:layout_marginEnd="20dp"
-                    android:textColor="?attr/colorSecondary"/>
-                <TextView
+                    android:text="25"
+                    android:textAlignment="center"
+                    android:textColor="?attr/colorSecondary"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    android:inputType="number"/>
+
+                <EditText
                     android:id="@+id/nickname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="Blaster"
                     android:textSize="25sp"
                     android:textStyle="bold"
-                    android:text="Blaster" />
+                    android:maxLines="1"
+                    android:inputType="text"/>
             </LinearLayout>
 
             <LinearLayout
@@ -70,18 +87,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="RP: "
+                    android:textColor="?attr/rpText"
                     android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:layout_marginEnd="20dp"
-                    android:textColor="?attr/rpText"/>
+                    android:textStyle="bold" />
 
-                <TextView
+                <EditText
                     android:id="@+id/rp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text=""
                     android:textSize="25sp"
                     android:textStyle="bold"
-                    android:text="" />
+                    android:inputType="number"/>
             </LinearLayout>
 
             <LinearLayout
@@ -97,33 +114,13 @@
                     android:text="Skill Level: "
                     android:textSize="18dp" />
 
-                <TextView
-                    android:id="@+id/skillLevel"
+                <EditText
+                    android:id="@+id/skillLevelInput"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:hint=""
                     android:inputType="number"
-                    android:text="" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Nature: "
-                    android:textSize="18dp" />
-
-                <TextView
-                    android:id="@+id/nature"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
                     android:text="" />
             </LinearLayout>
 
@@ -153,9 +150,9 @@
                         android:id="@+id/ingredient1"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/ic_profile"
                         android:background="@drawable/rounded_background"
                         android:backgroundTint="?attr/contrastMid"
+                        android:src="@drawable/ic_profile"
                         android:text="" />
 
                     <TextView
@@ -163,7 +160,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="x1"/>
+                        android:text="x1" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -184,9 +181,9 @@
                         android:id="@+id/ingredient2"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/ic_profile"
                         android:background="@drawable/rounded_background"
                         android:backgroundTint="?attr/contrastMid"
+                        android:src="@drawable/ic_profile"
                         android:text="" />
 
                     <TextView
@@ -194,7 +191,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="x1"/>
+                        android:text="x1" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -214,9 +211,9 @@
                         android:id="@+id/ingredient3"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/ic_profile"
                         android:background="@drawable/rounded_background"
                         android:backgroundTint="?attr/contrastMid"
+                        android:src="@drawable/ic_profile"
                         android:text="" />
 
                     <TextView
@@ -224,7 +221,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="x1"/>
+                        android:text="x1" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -255,7 +252,9 @@
                         android:autoSizeMinTextSize="10sp"
                         android:autoSizeTextType="uniform"
                         android:background="@drawable/subskills"
+                        android:padding="10dp"
                         android:text=""
+                        android:textColor="@color/black"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -275,7 +274,9 @@
                         android:autoSizeMinTextSize="10sp"
                         android:autoSizeTextType="uniform"
                         android:background="@drawable/subskills"
+                        android:padding="10dp"
                         android:text=""
+                        android:textColor="@color/black"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -295,7 +296,9 @@
                         android:autoSizeMinTextSize="10sp"
                         android:autoSizeTextType="uniform"
                         android:background="@drawable/subskills"
+                        android:padding="10dp"
                         android:text=""
+                        android:textColor="@color/black"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -315,7 +318,9 @@
                         android:autoSizeMinTextSize="10sp"
                         android:autoSizeTextType="uniform"
                         android:background="@drawable/subskills"
+                        android:padding="10dp"
                         android:text=""
+                        android:textColor="@color/black"
                         android:textSize="12sp" />
                 </LinearLayout>
             </GridLayout>
@@ -336,9 +341,79 @@
                     android:autoSizeMinTextSize="10sp"
                     android:autoSizeTextType="uniform"
                     android:background="@drawable/subskills"
+                    android:padding="10dp"
                     android:text=""
+                    android:textColor="@color/black"
                     android:textSize="12sp" />
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/nature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/border_background_rounded"
+                    android:backgroundTint="?attr/colorSecondary"
+                    android:padding="5dp"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="Brave"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/natureUpText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:text="Speed of help" />
+
+                        <TextView
+                            android:id="@+id/natureUpPercent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="+10%"
+                            android:textColor="?attr/colorSecondary" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/natureDownText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:text="EXP gains" />
+
+                        <TextView
+                            android:id="@+id/natureDownPercent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="-10%"
+                            android:textColor="?attr/rpText" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
 
             <Button
                 android:id="@+id/saveButton"
@@ -351,4 +426,4 @@
                 android:textColor="?attr/buttonTextAlt" />
         </LinearLayout>
     </LinearLayout>
-</ScrollView>
+</LinearLayout>
