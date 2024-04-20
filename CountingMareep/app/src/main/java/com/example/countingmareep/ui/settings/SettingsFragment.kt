@@ -54,6 +54,11 @@ class SettingsFragment : Fragment() {
         } catch (ex: IOException) {
         }
 
+        binding.settingsRankTV.text = "Research Rank: ${viewModel.getRank()}"
+        binding.settingsBefriendedTV.text = "Pokémon Befriended: ${viewModel.getBefriended()}/${ViewModel.POKEMON_AMOUNT}"
+        binding.settingsSleptTV.text = "Hours Slept: ${viewModel.getHoursSlept()} Hrs"
+        binding.settingsTeamsTV.text = "Teams Generated: ${viewModel.getTeamCount()}"
+
         return root
     }
 
