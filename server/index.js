@@ -53,6 +53,7 @@ app.get("/getAllUsers", async (req, res) => {
 });
 
 app.post("/signUp", async (req, res) => {
+    console.log(req.body);
     const inputs = req.body;
     if (!inputs) {
         return res.status(400).json({ msg: "Missing Request Body" });
@@ -89,6 +90,7 @@ app.post("/signUp", async (req, res) => {
     password: String
  */
 app.post("/login", async (req, res) => {
+    console.log(req.body);
     const inputs = req.body;
     if (!inputs) {
         return res.status(400).json({ msg: "Missing Request Body", sessionID: "" });
