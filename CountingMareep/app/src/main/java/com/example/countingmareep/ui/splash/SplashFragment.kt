@@ -31,7 +31,7 @@ class SplashFragment : Fragment() {
         val mainActivity = activity as MainActivity
 
         binding.loginButton.setOnClickListener {
-            mainActivity.loggedInRedirect()
+            mainActivity.loginAccountRedirect()
         }
 
         binding.createButton.setOnClickListener {

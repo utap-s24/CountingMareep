@@ -42,6 +42,12 @@
         tools:layout="@layout/fragment_create" />
 
     <fragment
+        android:id="@+id/navigation_login"
+        android:name="com.example.countingmareep.ui.splash.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login" />
+
+    <fragment
         android:id="@+id/navigation_modify"
         android:name="com.example.countingmareep.ui.box.modify.ModifyFragment"
         android:label="Modify"

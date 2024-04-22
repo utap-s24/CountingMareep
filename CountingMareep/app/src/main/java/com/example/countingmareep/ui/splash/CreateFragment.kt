@@ -38,7 +38,12 @@ class CreateFragment : Fragment() {
         val username = binding.usernameInput.text.toString()
         val email = binding.emailInput.text.toString()
         val password = binding.passwordInput.text.toString()
-        val birthday = binding.birthdayInput.text.toString().toLong()
+        var birthdayStr = binding.birthdayInput.text.toString()
+        if(binding.birthdayInput.text.toString().isEmpty()) {
+            Toast.makeText(activity, "Birthday must be filled in", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val birthday = birthdayStr.toLong()
         val rank = 1
         val befriended = 0
         val hoursSlept = 0
@@ -57,10 +62,10 @@ class CreateFragment : Fragment() {
         userCall.enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 Log.d("CreateFragment", "Response: ${response.code()}")
-                if ((response.isSuccessful || response.code() == 201) && response.body()?.success == true) {
+                if (response.isSuccessful) {
                     Toast.makeText(getActivity(), "Account created successfully!", Toast.LENGTH_LONG).show()
                 } else {
-                    Toast.makeText(getActivity(), "Failed to create account: ${response.body()?.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(getActivity(), "Failed to create account: ${response.body()?.msg}", Toast.LENGTH_LONG).show()
                 }
             }
 

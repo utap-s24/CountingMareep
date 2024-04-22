@@ -18,6 +18,7 @@ class ViewModel : ViewModel() {
         val POKEMON_AMOUNT: Int = PokemonData.pokemon.size
     }
 
+    private var sessionID: String = ""
     private var themeIsDark: Boolean = false
     private var userIcon: Int = 243
     private var userRank: Int = 1
@@ -25,71 +26,7 @@ class ViewModel : ViewModel() {
     private var hoursSlept: Int = 1876 // Hours
 
     private var selectedBoxPokemon: Int = -1
-    private val pokemonList: MutableList<PokemonDataModel> = mutableListOf(
-        PokemonDataModel(
-            "Garry",
-            50,
-            26,
-            listOf(
-                SubSkill(Skills.BerryFindingS),
-                SubSkill(Skills.HelpingBonus),
-                SubSkill(Skills.InventoryUpS),
-                SubSkill(Skills.SkillLevelS),
-                SubSkill(Skills.HelpingSpeedM)
-            ),
-            listOf(
-                Ingredient(Ingredients.FANCY_APPLE, 1),
-                Ingredient(Ingredients.WARMING_GINGER, 2),
-                Ingredient(Ingredients.WARMING_GINGER, 3),
-            ),
-            Nature.natureFromName("Bold"),
-            3075,
-            2,
-            UUID.randomUUID().toString()
-        ),
-        PokemonDataModel(
-            "Mellow",
-            32,
-            40,
-            listOf(
-                SubSkill(Skills.HelpingBonus),
-                SubSkill(Skills.SkillLevelM),
-                SubSkill(Skills.HelpingSpeedM),
-                SubSkill(Skills.SleepEXPBonus),
-                SubSkill(Skills.SkillTriggerS)
-            ),
-            listOf(
-                Ingredient(Ingredients.HONEY, 1),
-                Ingredient(Ingredients.PURE_OIL, 2),
-                Ingredient(Ingredients.HONEY, 4),
-            ),
-            Nature.natureFromName("Sassy"),
-            2306,
-            5,
-            UUID.randomUUID().toString()
-        ),
-        PokemonDataModel(
-            "Blaster",
-            43,
-            9,
-            listOf(
-                SubSkill(Skills.IngredientFinderM),
-                SubSkill(Skills.InventoryUpM),
-                SubSkill(Skills.HelpingSpeedS),
-                SubSkill(Skills.SkillTriggerM),
-                SubSkill(Skills.InventoryUpS)
-            ),
-            listOf(
-                Ingredient(Ingredients.MOOMOO_MILK, 2),
-                Ingredient(Ingredients.SOOTHING_CACAO, 3),
-                Ingredient(Ingredients.BEAN_SAUSAGE, 7),
-            ),
-            Nature.natureFromName("Mild"),
-            2177,
-            3,
-            UUID.randomUUID().toString()
-        )
-    )
+    private val pokemonList: MutableList<PokemonDataModel> = mutableListOf()
 
     private val teamsList: MutableList<PokemonTeam> = mutableListOf()
 
@@ -162,5 +99,13 @@ class ViewModel : ViewModel() {
 
     fun getIcon(): Int {
         return userIcon
+    }
+
+    fun setSession(id: String) {
+        sessionID = id
+    }
+
+    fun getSession(): String {
+        return sessionID
     }
 }

@@ -5,7 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import com.example.countingmareep.MainActivity
+import com.example.countingmareep.ViewModel
 import com.example.countingmareep.databinding.FragmentLoginBinding
 import com.example.countingmareep.network.ApiService
 import com.example.countingmareep.network.UserResponse
@@ -19,6 +23,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: ViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -49,10 +54,19 @@ class LoginFragment : Fragment() {
 
         loginCall.enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
-                if (response.isSuccessful && response.body()?.success == true) {
-                    Toast.makeText(getActivity(), "Login successful!", Toast.LENGTH_LONG).show()
+                if (response.isSuccessful) {
+                    val mainActivity = activity as MainActivity
+                    if (response.body()?.sessionID != null) {
+                        viewModel.setSession(response.body()?.sessionID!!)
+                        Toast.makeText(getActivity(), "Login successful! ${response.body()?.sessionID!!}", Toast.LENGTH_LONG).show()
+                    }
+                    mainActivity.loggedInRedirect()
                 } else {
-                    Toast.makeText(getActivity(), "Login failed: ${response.body()?.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        getActivity(),
+                        "Login failed: ${response.body()?.msg}",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
 

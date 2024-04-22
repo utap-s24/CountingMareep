@@ -91,6 +91,10 @@ class MainActivity : AppCompatActivity() {
         binding.navView.visibility = View.VISIBLE
     }
 
+    fun loginAccountRedirect(): Unit {
+        navController.navigate(R.id.navigation_login)
+    }
+
     fun createAccountRedirect(): Unit {
         navController.navigate(R.id.navigation_create)
     }
