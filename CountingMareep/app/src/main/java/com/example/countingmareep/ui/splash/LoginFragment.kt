@@ -1,13 +1,12 @@
 package com.example.countingmareep.ui.splash
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.countingmareep.databinding.FragmentCreateBinding
+import com.example.countingmareep.databinding.FragmentLoginBinding
 import com.example.countingmareep.network.ApiService
 import com.example.countingmareep.network.UserResponse
 import okhttp3.OkHttpClient
@@ -17,31 +16,26 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class CreateFragment : Fragment() {
-    private var _binding: FragmentCreateBinding? = null
+class LoginFragment : Fragment() {
+    private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCreateBinding.inflate(inflater, container, false)
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        binding.createAccountButton.setOnClickListener {
-            createAccount()
+        binding.loginButton.setOnClickListener {
+            performLogin()
         }
 
         return root
     }
 
-    private fun createAccount() {
+    private fun performLogin() {
         val username = binding.usernameInput.text.toString()
-        val email = binding.emailInput.text.toString()
         val password = binding.passwordInput.text.toString()
-        val birthday = binding.birthdayInput.text.toString().toLong()
-        val rank = 1
-        val befriended = 0
-        val hoursSlept = 0
 
         val client = OkHttpClient.Builder().build()
         val retrofit = Retrofit.Builder()
@@ -51,16 +45,14 @@ class CreateFragment : Fragment() {
             .build()
 
         val service = retrofit.create(ApiService::class.java)
-        val userCall = service.createUser(username, email, password, birthday, rank, befriended, hoursSlept)
+        val loginCall = service.login(username, password)
 
-
-        userCall.enqueue(object : Callback<UserResponse> {
+        loginCall.enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
-                Log.d("CreateFragment", "Response: ${response.code()}")
-                if ((response.isSuccessful || response.code() == 201) && response.body()?.success == true) {
-                    Toast.makeText(getActivity(), "Account created successfully!", Toast.LENGTH_LONG).show()
+                if (response.isSuccessful && response.body()?.success == true) {
+                    Toast.makeText(getActivity(), "Login successful!", Toast.LENGTH_LONG).show()
                 } else {
-                    Toast.makeText(getActivity(), "Failed to create account: ${response.body()?.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(getActivity(), "Login failed: ${response.body()?.message}", Toast.LENGTH_LONG).show()
                 }
             }
 

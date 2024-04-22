@@ -5,12 +5,12 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".ui.splash.CreateFragment">
+    tools:context=".ui.splash.LoginFragment">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Create an Account"
+        android:text="Login"
         android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -25,13 +25,6 @@
         android:padding="16dp"/>
 
     <EditText
-        android:id="@+id/emailInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Email Address"
-        android:padding="16dp"/>
-
-    <EditText
         android:id="@+id/passwordInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,19 +32,11 @@
         android:inputType="textPassword"
         android:padding="16dp"/>
 
-    <EditText
-        android:id="@+id/birthdayInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Birthday (timestamp)"
-        android:inputType="number"
-        android:padding="16dp"/>
-
     <Button
-        android:id="@+id/createAccountButton"
+        android:id="@+id/loginButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Create Account"
+        android:text="Login"
         android:backgroundTint="?attr/colorPrimary"
         android:textColor="#FFFFFF"
         android:padding="16dp"/>
