@@ -52,6 +52,46 @@ app.get("/getAllUsers", async (req, res) => {
     res.json(users);
 });
 
+// Get the user data for the user with the given sessionID
+app.post("/getUserData", async (req, res) => {
+    const inputs = req.body;
+    if (!inputs) {
+        return res.status(400).json({ msg: "Missing Request Body" });
+    }
+    const relevantArgs = ["sessionID"];
+    if (isAnyArgUndefined(inputs, relevantArgs)) {
+        return res.status(401).json({ msg: "Missing Field" });
+    }
+    const session = sessionsList[inputs.sessionID];
+    if (!session) {
+        return res.status(401).json({ msg: "Invalid Session" });
+    }
+    const user = await User.findOne({ name: session.username });
+    if (user == null) {
+        return res.status(404).json({ msg: "No user with that name" });
+    }
+    return res.status(200).json({ name: user.name, rank: user.rank, befriended: user.befriended, hoursSlept: user.hoursSlept, birthday: Number(user.birthday) });
+});
+
+// Update the user data for the user with the given sessionID
+app.post("/updateUserData", async (req, res) => {
+    const inputs = req.body;
+    if (!inputs) {
+        return res.status(400).json({ msg: "Missing Request Body" });
+    }
+    const relevantArgs = ["sessionID", "rank", "befriended", "hoursSlept", "birthday"];
+    if (isAnyArgUndefined(inputs, relevantArgs)) {
+        return res.status(401).json({ msg: "Missing Field" });
+    }
+    const session = sessionsList[inputs.sessionID];
+    if (!session) {
+        return res.status(401).json({ msg: "Invalid Session" });
+    }
+    
+    await User.updateOne({ name: session.username }, { rank: inputs.rank, befriended: inputs.befriended, hoursSlept: inputs.hoursSlept, birthday: inputs.birthday });
+    return res.status(200).json({ msg: "Success" });
+});
+
 app.post("/signUp", async (req, res) => {
     console.log(req.body);
     const inputs = req.body;
@@ -156,6 +196,28 @@ app.post("/getPokemon", async (req, res) => {
         return res.status(401).json({ msg: "Invalid Session" });
     }
     return res.status(200).json(await Pokemon.find({ name: session.username }));
+});
+
+/*
+    rank: Number,
+    befriended: Number,
+    hoursSlept: Number,
+    birthday: BigInt
+*/
+app.post("/updateSettings", async (req, res) => {
+    const inputs = req.body;
+    if (!inputs) {
+        return res.status(400).json({ msg: "Missing Request Body" });
+    }
+    const relevantArgs = ["sessionID", "rank", "befriended", "hoursSlept", "birthday"];
+    if (isAnyArgUndefined(inputs, relevantArgs)) {
+        return res.status(401).json({ msg: "Missing Field" });
+    }
+    // Validate Session
+    const session = sessionsList[inputs.sessionID];
+    if (!session) {
+        return res.status(401).json({ msg: "Invalid Session" });
+    }
 });
 
 app.listen(PORT, async () => {
