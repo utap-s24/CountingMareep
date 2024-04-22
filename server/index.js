@@ -8,6 +8,7 @@ import cors from 'cors';
 // Personal Files
 import { User } from "./schemas/user.js";
 import { Session } from './session.js';
+import { Pokemon } from './schemas/pokemon.js';
 
 const app = express();
 const PORT = process.env.PORT || 3030;
@@ -30,6 +31,15 @@ async function connectToDB() {
     }
 }
 
+function isAnyArgUndefined(inputs, argList) {
+    for (const arg of argList) {
+        if (inputs[arg] === undefined) {
+            return true;
+        }
+    }
+    return false;
+}
+
 app.get("/", (req, res) => {
     return res.json({ msg: "Success" });
 });
@@ -47,10 +57,11 @@ app.post("/signUp", async (req, res) => {
     if (!inputs) {
         return res.status(400).json({ msg: "Missing Request Body" });
     }
-    if (inputs.name === undefined || inputs.password === undefined || inputs.rank === undefined || inputs.befriended === undefined || inputs.hoursSlept === undefined || inputs.birthday === undefined || inputs.email === undefined) {
+    const relevantArgs = ["name", "password", "rank", "befriended", "hoursSlept", "birthday", "email"];
+    if (isAnyArgUndefined(inputs, relevantArgs)) {
         return res.status(401).json({ msg: "Missing Field" });
     }
-
+    // Unique Username and Valid Email
     let nameAlreadyUsed = await User.findOne({ name: inputs.name });
     if (nameAlreadyUsed !== null) {
         return res.status(403).json({ msg: "Failed - Name Taken" });
@@ -58,7 +69,7 @@ app.post("/signUp", async (req, res) => {
     if (!EmailValidator.validate(inputs.email)) {
         return res.status(403).json({ msg: "Invalid Email" });
     }
-
+    // Valid Details, Create User
     const hashedPassword = bcrypt.hashSync(inputs.password, SALT_ROUNDS);
     await User.insertMany({
         email: inputs.email,
@@ -82,7 +93,8 @@ app.post("/login", async (req, res) => {
     if (!inputs) {
         return res.status(400).json({ msg: "Missing Request Body", sessionID: "" });
     }
-    if (inputs.name === undefined || inputs.password === undefined) {
+    const relevantArgs = ["name", "password"];
+    if (isAnyArgUndefined(inputs, relevantArgs)) {
         return res.status(401).json({ msg: "Missing Field", sessionID: "" });
     }
     // Check if user is in DB
@@ -93,20 +105,56 @@ app.post("/login", async (req, res) => {
     // Password Check
     if (bcrypt.compareSync(inputs.password, user.password)) {
         let sessionID = uuidv4();
-        if (sessionsList[inputs.name]) {
-            // Reuse Session
-            sessionID = sessionsList[inputs.name].uuid;
-        } else {
-            sessionsList[inputs.name] = new Session(new Date(), sessionID, inputs.name);
-        }
+        sessionsList[sessionID] = new Session(new Date(), sessionID, inputs.name);
 
         return res.status(200).json({ msg: "Success", sessionID: sessionID });
-    } else {
-        return res.status(401).json({ msg: "Incorrect Password", sessionID: "" });
     }
+    return res.status(401).json({ msg: "Incorrect Password", sessionID: "" });
 });
 
+app.post("/createPokemon", async (req, res) => {
+    const inputs = req.body;
+    if (!inputs) {
+        return res.status(400).json({ msg: "Missing Request Body" });
+    }
+    const relevantArgs = ["sessionID", "name", "level", "pokedexEntry", "subSkills", "ingredients", "nature", "RP", "mainSkillLevel", "pokemonID"];
+    if (isAnyArgUndefined(inputs, relevantArgs)) {
+        return res.status(401).json({ msg: "Missing Field" });
+    }
+    // Validate Session
+    const session = sessionsList[inputs.sessionID];
+    if (!session) {
+        return res.status(401).json({ msg: "Invalid Session" });
+    }
+    await Pokemon.insertMany({
+        ownerName: session.username,
+        name: inputs.name,
+        level: inputs.level,
+        pokedexEntry: inputs.pokedexEntry,
+        subSkills: inputs.subSkills,
+        ingredients: inputs.ingredients,
+        nature: inputs.nature,
+        RP: inputs.RP,
+        mainSkillLevel: inputs.mainSkillLevel,
+        pokemonID: inputs.pokemonID
+    });
+    return res.status(200).json({ msg: "Success" });
+});
 
+/*
+ * sessionID 
+ */
+app.post("/getPokemon", async (req, res) => {
+    const inputs = req.body;
+    if (!inputs) {
+        return res.status(400).json({ msg: "Missing Request Body" });
+    }
+    const session = sessionsList[inputs.sessionID];
+    if (!session) {
+        return res.status(401).json({ msg: "Invalid Session" });
+    }
+    return res.status(200).json(await Pokemon.find({ name: session.username }));
+});
 
 app.listen(PORT, async () => {
     await connectToDB();

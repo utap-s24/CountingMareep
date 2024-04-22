@@ -12,6 +12,7 @@
 import mongoose from 'mongoose';
 
 const pokemonSchema = new mongoose.Schema({
+    ownerName: String,
     name: String,
     level: Number,
     pokedexEntry: Number,
@@ -23,4 +24,4 @@ const pokemonSchema = new mongoose.Schema({
     pokemonID: String
 });
 
-export const Pokemon = mongoose.model('User', userSchema);
+export const Pokemon = mongoose.model('Pokemon', pokemonSchema);
