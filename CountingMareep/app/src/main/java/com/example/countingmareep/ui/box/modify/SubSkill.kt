@@ -127,6 +127,10 @@ class SubSkill(id: Skills) {
         fun fromIndex(index: Int): SubSkill {
             return SubSkill(Skills.entries[index])
         }
+
+        fun getSkillFromOrdinal(ordinal: Int): Skills {
+            return Skills.entries[ordinal]
+        }
     }
 
     private var thisSkill = SKILLS[id.ordinal]

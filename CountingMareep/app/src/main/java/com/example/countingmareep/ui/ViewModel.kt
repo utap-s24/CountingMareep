@@ -1,6 +1,7 @@
 package com.example.countingmareep
 
 import PokemonDataModel
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.countingmareep.ui.box.Ingredient
 import com.example.countingmareep.ui.box.Ingredients
@@ -116,6 +117,10 @@ class ViewModel : ViewModel() {
     }
 
     fun addPokemon(pokemon: PokemonDataModel) {
+        val ingredientsList = pokemon.ingredients
+        Log.d("Ingredient Type", ingredientsList[0].id.ordinal.toString())
+        Log.d("Ingredient Quantity", ingredientsList[0].quantity.toString())
+
         pokemonList.add(pokemon)
     }
 

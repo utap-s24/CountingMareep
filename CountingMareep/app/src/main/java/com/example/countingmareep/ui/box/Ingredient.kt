@@ -20,5 +20,9 @@ enum class Ingredients {
 }
 
 class Ingredient(var id: Ingredients, var quantity: Int) {
-
+    companion object {
+        fun getIngredientFromOrdinal(ordinal: Int): Ingredients {
+            return Ingredients.entries[ordinal]
+        }
+    }
 }
