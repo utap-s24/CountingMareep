@@ -63,7 +63,7 @@
         android:layout_weight="0.25"
         android:background="@drawable/rounded_background"
         android:gravity="center"
-        android:text="Ash Ketchum"
+        android:text=""
         android:textColor="?attr/buttonTextAlt"
         android:textSize="20sp"
         android:textStyle="bold" />

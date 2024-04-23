@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -120,9 +121,14 @@ class MainActivity : AppCompatActivity() {
 
         val editor = appSettings.edit()
         editor.putBoolean(PREFS_THEME, isDark)
-        editor.putInt(PREFS_NAV, currentNav)
+//        editor.putInt(PREFS_NAV, currentNav)
         editor.apply()
-        this.recreate()
+        Toast.makeText(this, "Theme will update on restart.", Toast.LENGTH_SHORT).show()
+//        this.recreate()
+    }
+
+    fun isDarkTheme(): Boolean {
+        return appSettings.getBoolean(PREFS_THEME, true)
     }
 
     fun resetNavPref(): Unit {

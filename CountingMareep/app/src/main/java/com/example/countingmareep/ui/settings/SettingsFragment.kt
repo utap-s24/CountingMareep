@@ -40,6 +40,7 @@ class SettingsFragment : Fragment() {
         val root: View = binding.root
         val mainActivity = activity as MainActivity
 
+        binding.themeToggle.isChecked = mainActivity.isDarkTheme()
         binding.themeToggle.setOnCheckedChangeListener { _, isChecked ->
             mainActivity.saveTheme(isChecked)
         }
@@ -99,10 +100,24 @@ class SettingsFragment : Fragment() {
     }
 
     private fun saveUserData() {
+        val mainActivity = activity as MainActivity
+
         val name = binding.settingsName.text.toString()
-        val rank = binding.settingsRankTV.text.toString().toInt()
-        val befriended = binding.settingsBefriendedTV.text.toString().toInt()
-        val hoursSlept = binding.settingsSleptTV.text.toString().toInt()
+        val rankStr = binding.settingsRankTV.text.toString()
+        val friendStr = binding.settingsBefriendedTV.text.toString()
+        val hourStr = binding.settingsSleptTV.text.toString()
+        if(rankStr.isEmpty() || friendStr.isEmpty() || hourStr.isEmpty()) {
+            Toast.makeText(mainActivity, "Unfilled Value", Toast.LENGTH_SHORT).show()
+            return
+        }
+        // Validate Numbers
+        val rank = rankStr.toInt()
+        val befriended = friendStr.toInt()
+        val hoursSlept = hourStr.toInt()
+        if(rank <= 0 || rank > 100 || befriended < 0 || befriended > ViewModel.POKEMON_AMOUNT || hoursSlept < 0) {
+            Toast.makeText(mainActivity, "Some Value is Out of Bounds", Toast.LENGTH_SHORT).show()
+            return
+        }
         val birthday = viewModel.getBirthday()
 
         val client = OkHttpClient.Builder().build()
