@@ -123,16 +123,11 @@ class SettingsFragment : Fragment() {
     }
 
     private fun updateUI() {
-        binding.settingsName.setText(viewModel.getUserName())
+        binding.settingsName.text = viewModel.getUserName()
         binding.settingsRankTV.setText(viewModel.getRank().toString())
         binding.settingsBefriendedTV.setText(viewModel.getBefriended().toString())
         binding.settingsSleptTV.setText(viewModel.getHoursSlept().toString())
-        binding.settingsBirthdayTV.setText("Birthday: " + fomratDateFromMillis(viewModel.getBirthday()))
-        // binding.settingsName = viewModel.getUserName()
-        // binding.settingsRankTV = viewModel.getRank().toString()
-        // binding.settingsBefriendedTV = viewModel.getBefriended().toString()
-        // binding.settingsSleptTV = viewModel.getHoursSlept().toString()
-        // binding.settingsBirthdayTV = "Birthday: " + fomratDateFromMillis(viewModel.getBirthday())
+        binding.settingsBirthdayTV.text = "Birthday: " + fomratDateFromMillis(viewModel.getBirthday())
     }
 
     private fun fomratDateFromMillis(millis: Long): String {
@@ -140,7 +135,7 @@ class SettingsFragment : Fragment() {
         val netDate = Date(millis)
         return sdf.format(netDate)
     }
-
+    
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
