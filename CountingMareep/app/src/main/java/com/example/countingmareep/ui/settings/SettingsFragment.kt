@@ -162,8 +162,11 @@ class SettingsFragment : Fragment() {
             if (response.isSuccessful) {
                 // Assume viewModel has a method to clear the session data
                 viewModel.clearSession()
+
                 // Navigate to SplashFragment using the defined action
                 findNavController().navigate(R.id.action_settings_to_splash)
+                // Hide the navigation view from MainActivity
+                (activity as MainActivity).hideNavigationView()
                 Toast.makeText(context, "Logged out successfully", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(context, "Failed to log out", Toast.LENGTH_SHORT).show()

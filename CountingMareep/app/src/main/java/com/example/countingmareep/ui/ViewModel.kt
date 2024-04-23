@@ -148,6 +148,7 @@ class ViewModel : ViewModel() {
                     Log.d("XXX", "Got All Teams")
                     val body = response.body()
                     if (body != null) {
+                        allTeamsExisting.clear()
                         for (teamResponse in body) {
                             allTeamsExisting.add(teamResponse)
                         }

@@ -105,6 +105,11 @@ class MainActivity : AppCompatActivity() {
         navController.navigate(R.id.navigation_create)
     }
 
+    fun hideNavigationView() {
+        binding.navView.visibility = View.GONE
+    }
+
+
     fun saveTheme(isDark: Boolean): Unit {
         val currentDest = navController.currentDestination
         val currentNav = if (currentDest != null) {

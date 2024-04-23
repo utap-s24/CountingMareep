@@ -48,7 +48,7 @@ class SearchFragment : Fragment() {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         val searchViewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
 
-        // Generate fake teams
+        viewModel.loadTeams()
         fakeTeams = viewModel.getAllTeams()
 
         setupRecyclerView()
@@ -56,15 +56,6 @@ class SearchFragment : Fragment() {
 
         return binding.root
     }
-
-//    private fun generateFakeTeams(count: Int): List<Team> {
-//        return List(count) { index ->
-//            Team(
-//                name = "Team ${index + 1}",
-//                pokemonList = List(5) { generateRandomPokemonDataModel() }
-//            )
-//        }
-//    }
 
     private fun setupRecyclerView() {
         teamAdapter = TeamAdapter(context, fakeTeams, object : TeamAdapter.OnTeamClickListener {
@@ -87,7 +78,6 @@ class SearchFragment : Fragment() {
         }
     }
 
-
     private fun setupSearchBar() {
         binding.searchBar.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -99,29 +89,6 @@ class SearchFragment : Fragment() {
         
             override fun afterTextChanged(s: Editable?) {}
         })
-    }
-
-    private fun generateRandomPokemonDataModel(): PokemonDataModel {
-        val random = Random()
-        val pokemonBaseData = PokemonData.getRandom()
-        val level = random.nextInt(30) + 1  // Level from 1 to 30
-        val rp = random.nextInt(100) + 1  // RP for example, replace with your logic
-        val nature = Nature.getRandom()
-        val subSkills = listOf(SubSkill.fromIndex(random.nextInt(SubSkill.subSkillNames.size)))
-        val ingredients = listOf(Ingredient(Ingredients.values()[random.nextInt(Ingredients.values().size)], random.nextInt(10) + 1))
-        val mainSkillLevel = random.nextInt(5) + 1  // MainSkillLevel from 1 to 5
-    
-        return PokemonDataModel(
-            name = pokemonBaseData.name,
-            level = level,
-            pokedexEntry = pokemonBaseData.dexNumber,
-            subSkills = subSkills,
-            ingredients = ingredients,
-            nature = nature,
-            RP = rp,
-            mainSkillLevel = mainSkillLevel,
-            pokemonID = UUID.randomUUID().toString()
-        )
     }
 
     override fun onDestroyView() {
