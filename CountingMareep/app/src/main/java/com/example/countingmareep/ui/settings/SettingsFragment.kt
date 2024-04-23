@@ -1,105 +1,119 @@
 package com.example.countingmareep.ui.settings
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import com.example.countingmareep.MainActivity
 import com.example.countingmareep.ViewModel
 import com.example.countingmareep.databinding.FragmentSettingsBinding
-import com.example.countingmareep.ui.box.PokemonData
-import java.io.IOException
-import java.io.InputStream
+import com.example.countingmareep.network.ApiService
+import com.example.countingmareep.network.UserDataResponse
+import okhttp3.OkHttpClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class SettingsFragment : Fragment() {
-    companion object {
-        const val TAG = "SettingsFragment"
-    }
-
     private var _binding: FragmentSettingsBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
     private val viewModel: ViewModel by activityViewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val settingsViewModel =
-            ViewModelProvider(this).get(SettingsViewModel::class.java)
-
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        binding.themeToggle.isChecked = viewModel.isDark()
         binding.themeToggle.setOnCheckedChangeListener { _, isChecked ->
-            setThemeFromSwitch(isChecked)
+            val mainActivity = activity as MainActivity
+            mainActivity.saveTheme(isChecked)
         }
 
-        val mainActivity = activity as MainActivity
-        try {
-            val ims: InputStream = mainActivity.assets.open("icons/${viewModel.getIcon()}.png")
-            val d = Drawable.createFromStream(ims, null)
-            binding.settingsImage.setImageDrawable(d)
-            ims.close()
-        } catch (ex: IOException) {
-        }
-
-        binding.settingsRankTV.setText("${viewModel.getRank()}")
-        binding.settingsBefriendedTV.setText("${viewModel.getBefriended()}")
-        binding.settingsSleptTV.setText("${viewModel.getHoursSlept()}")
-        binding.settingsTeamsTV.text = "Teams Generated: ${viewModel.getTeamCount()}"
+        loadUserData()
 
         binding.saveButton.setOnClickListener {
-            val rankStr = binding.settingsRankTV.text.toString()
-            val friendStr = binding.settingsBefriendedTV.text.toString()
-            val hourStr = binding.settingsSleptTV.text.toString()
-            if(rankStr.isEmpty() || friendStr.isEmpty() || hourStr.isEmpty()) {
-                Toast.makeText(mainActivity, "Unfilled Value", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            // Validate Numbers
-            val rank = rankStr.toInt()
-            val friended = friendStr.toInt()
-            val hours = hourStr.toInt()
-            if(rank <= 0 || rank > 100 || friended < 0 || friended > ViewModel.POKEMON_AMOUNT || hours < 0) {
-                Toast.makeText(mainActivity, "Some Value is Out of Bounds", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            // Update
-            viewModel.setRank(rank)
-            viewModel.setBefriended(friended)
-            viewModel.setHoursSlept(hours)
-            // TODO: HTTP REQUEST
-            Toast.makeText(mainActivity, "Success", Toast.LENGTH_SHORT).show()
+            saveUserData()
         }
 
         return root
     }
 
-    override fun onStart() {
-        super.onStart()
+    private fun loadUserData() {
+        val client = OkHttpClient.Builder().build()
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://countingmareep.onrender.com/")
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
 
-        binding.settingsRankTV.setText("${viewModel.getRank()}")
-        binding.settingsBefriendedTV.setText("${viewModel.getBefriended()}")
-        binding.settingsSleptTV.setText("${viewModel.getHoursSlept()}")
-        binding.settingsTeamsTV.text = "Teams Generated: ${viewModel.getTeamCount()}"
+        val service = retrofit.create(ApiService::class.java)
+        val userCall = service.getUserData(viewModel.getSession())
+
+        userCall.enqueue(object : Callback<UserDataResponse> {
+            override fun onResponse(call: Call<UserDataResponse>, response: Response<UserDataResponse>) {
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        viewModel.setRank(it.rank)
+                        viewModel.setBefriended(it.befriended)
+                        viewModel.setHoursSlept(it.hoursSlept)
+                        updateUI()
+                    }
+                } else {
+                    Toast.makeText(context, "Failed to load data: ${response.message()}", Toast.LENGTH_LONG).show()
+                }
+            }
+
+            override fun onFailure(call: Call<UserDataResponse>, t: Throwable) {
+                Toast.makeText(context, "Error: ${t.message}", Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
-    private fun setThemeFromSwitch(isDarkMode: Boolean) {
-        val mainActivity = activity as MainActivity
-        mainActivity.saveTheme(isDarkMode)
+    private fun saveUserData() {
+        val rank = binding.settingsRankTV.text.toString().toInt()
+        val befriended = binding.settingsBefriendedTV.text.toString().toInt()
+        val hoursSlept = binding.settingsSleptTV.text.toString().toInt()
+        val birthday = binding.settingsBirthdayTV.text.toString().toLong()
+
+        val client = OkHttpClient.Builder().build()
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://countingmareep.onrender.com/")
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val service = retrofit.create(ApiService::class.java)
+        val updateCall = service.updateUserData(viewModel.getSession(), rank, befriended, hoursSlept)
+
+        updateCall.enqueue(object : Callback<UserDataResponse> {
+            override fun onResponse(call: Call<UserDataResponse>, response: Response<UserDataResponse>) {
+                // Create a log message to print the response body and status code and check if the response is successful in kotlin using Log.d
+                Log.d("Response", "Response body: ${response.body()}")
+                Log.d("Response", "Response code: ${response.code()}")
+                Log.d("Response", "Response successful: ${response.isSuccessful}")        
+                if (response.isSuccessful) {
+                    Toast.makeText(context, "Data updated successfully!", Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(context, "Failed to update data: ${response.message()}", Toast.LENGTH_LONG).show()
+                }
+            }
+
+            override fun onFailure(call: Call<UserDataResponse>, t: Throwable) {
+                Toast.makeText(context, "Error: ${t.message}", Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
+    private fun updateUI() {
+        binding.settingsRankTV.setText(viewModel.getRank().toString())
+        binding.settingsBefriendedTV.setText(viewModel.getBefriended().toString())
+        binding.settingsSleptTV.setText(viewModel.getHoursSlept().toString())
     }
 
     override fun onDestroyView() {
