@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.countingmareep.MainActivity
 import com.example.countingmareep.databinding.FragmentCreateBinding
 import com.example.countingmareep.network.ApiService
 import com.example.countingmareep.network.UserResponse
@@ -51,7 +52,7 @@ class CreateFragment : Fragment() {
 
         val client = OkHttpClient.Builder().build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://countingmareep.onrender.com/")
+            .baseUrl(MainActivity.BASE_URL)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

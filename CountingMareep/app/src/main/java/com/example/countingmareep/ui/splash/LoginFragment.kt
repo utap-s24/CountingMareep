@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.example.countingmareep.MainActivity
 import com.example.countingmareep.ViewModel
@@ -25,7 +26,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: ViewModel by viewModels()
+    private val viewModel: ViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -49,7 +50,7 @@ class LoginFragment : Fragment() {
 
         val client = OkHttpClient.Builder().build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://countingmareep.onrender.com/")
+            .baseUrl(MainActivity.BASE_URL)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -65,9 +66,7 @@ class LoginFragment : Fragment() {
                         viewModel.setSession(response.body()?.sessionID!!)
                         mainActivity.saveUserPass(username, password)
                         viewModel.loadPokemonBox(mainActivity)
-                        Toast.makeText(getActivity(), "Login successful!", Toast.LENGTH_LONG).show()
                     }
-                    mainActivity.loggedInRedirect()
                 } else {
                     val gson = Gson()
                     val errorResponse = gson.fromJson(response.errorBody()?.charStream(), UserResponse::class.java)
@@ -80,6 +79,7 @@ class LoginFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                Log.d("Error", "${t.message}")
                 Toast.makeText(getActivity(), "Error: ${t.message}", Toast.LENGTH_LONG).show()
             }
         })

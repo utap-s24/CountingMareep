@@ -9,7 +9,11 @@ import androidx.lifecycle.ViewModel
 import com.example.countingmareep.network.ApiService
 import com.example.countingmareep.network.PokemonResponse
 import com.example.countingmareep.network.UserResponse
+import com.example.countingmareep.ui.box.Ingredient
+import com.example.countingmareep.ui.box.Ingredients
+import com.example.countingmareep.ui.box.Nature
 import com.example.countingmareep.ui.box.PokemonData
+import com.example.countingmareep.ui.box.modify.SubSkill
 import com.example.countingmareep.ui.team_builder.PokemonTeam
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
@@ -32,9 +36,12 @@ class ViewModel : ViewModel() {
     private var hoursSlept: Int = 1876 // Hours
 
     private var selectedBoxPokemon: Int = -1
-    private val pokemonList: MutableList<PokemonDataModel> = mutableListOf()
-
+    private var pokemonList: MutableList<PokemonDataModel> = mutableListOf()
     private val teamsList: MutableList<PokemonTeam> = mutableListOf()
+
+    init {
+        Log.d("XXX", "VIEW MODEL INITING")
+    }
 
     fun setTheme(isDark: Boolean) {
         themeIsDark = isDark
@@ -114,25 +121,71 @@ class ViewModel : ViewModel() {
     fun loadPokemonBox(mainActivity: MainActivity) {
         val client = OkHttpClient.Builder().build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://countingmareep.onrender.com/")
+            .baseUrl(MainActivity.BASE_URL)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         val service = retrofit.create(ApiService::class.java)
         val getCall = service.getPokemon(sessionID)
-
         getCall.enqueue(object : Callback<List<PokemonResponse>> {
-            override fun onResponse(call: Call<List<PokemonResponse>>, response: Response<List<PokemonResponse>>) {
+            override fun onResponse(
+                call: Call<List<PokemonResponse>>,
+                response: Response<List<PokemonResponse>>
+            ) {
                 if (response.isSuccessful) {
-                    Toast.makeText(mainActivity, "Box Length ${response.body()?.size.toString()}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        mainActivity,
+                        "Box Length ${response.body()?.size.toString()}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    val list = response.body()
+                    if (list != null) {
+                        // Populate Pokemon Box
+                        for (pokemonRes in list) {
+                            // Recreate SubSkills
+                            val subSkillList = pokemonRes.subSkills
+                            val realSubSkills: MutableList<SubSkill> = mutableListOf()
+                            for (subSkillID in subSkillList) {
+                                realSubSkills.add(SubSkill(SubSkill.getSkillFromOrdinal(subSkillID)))
+                            }
+                            // Recreate Ingredients
+                            val ingredientList = pokemonRes.ingredients
+                            val realIngredients: MutableList<Ingredient> = mutableListOf()
+                            for (ingredient in ingredientList) {
+                                realIngredients.add(
+                                    Ingredient(
+                                        Ingredient.getIngredientFromOrdinal(ingredient[0]),
+                                        ingredient[1]
+                                    )
+                                )
+                            }
+                            addPokemon(
+                                PokemonDataModel(
+                                    pokemonRes.name,
+                                    pokemonRes.level,
+                                    pokemonRes.pokedexEntry,
+                                    realSubSkills,
+                                    realIngredients,
+                                    Nature.natureFromName(pokemonRes.nature),
+                                    pokemonRes.RP,
+                                    pokemonRes.mainSkillLevel,
+                                    pokemonRes.pokemonID
+                                )
+                            )
+                        }
+                    }
+                    Log.d("View Model Box", pokemonList.toString())
+                    mainActivity.loggedInRedirect()
                 } else {
-                    Toast.makeText(mainActivity, "Bad Code ${response.code()}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(mainActivity, "Bad Code ${response.code()}", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
 
             override fun onFailure(call: Call<List<PokemonResponse>>, t: Throwable) {
-                Toast.makeText(mainActivity, "Failed Some Reason ${t.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(mainActivity, "Failed Some Reason ${t.message}", Toast.LENGTH_SHORT)
+                    .show()
             }
         })
     }

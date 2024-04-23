@@ -53,6 +53,7 @@ class BoxFragment : Fragment() {
         recyclerView.layoutManager = GridLayoutManager(mainActivity, 4)
         recyclerView.addItemDecoration(MarginItemDecoration(10, 4, GridLayoutManager.VERTICAL))
         // Get Data
+        Log.d("Box Data List", viewModel.getDataList().toString())
         dataList = viewModel.getDataList().sortedBy { it.RP }
         // Create Adapter
         adapter = BoxAdapter(dataList, mainActivity, viewModel)

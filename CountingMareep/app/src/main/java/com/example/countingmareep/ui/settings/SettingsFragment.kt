@@ -47,7 +47,7 @@ class SettingsFragment : Fragment() {
     private fun loadUserData() {
         val client = OkHttpClient.Builder().build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://countingmareep.onrender.com/")
+            .baseUrl(MainActivity.BASE_URL)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -83,7 +83,7 @@ class SettingsFragment : Fragment() {
 
         val client = OkHttpClient.Builder().build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://countingmareep.onrender.com/")
+            .baseUrl(MainActivity.BASE_URL)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

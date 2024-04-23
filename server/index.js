@@ -87,13 +87,12 @@ app.post("/updateUserData", async (req, res) => {
     if (!session) {
         return res.status(401).json({ msg: "Invalid Session" });
     }
-    
+
     await User.updateOne({ name: session.username }, { rank: inputs.rank, befriended: inputs.befriended, hoursSlept: inputs.hoursSlept, birthday: inputs.birthday });
     return res.status(200).json({ msg: "Success" });
 });
 
 app.post("/signUp", async (req, res) => {
-    console.log(req.body);
     const inputs = req.body;
     if (!inputs) {
         return res.status(400).json({ msg: "Missing Request Body" });
@@ -130,7 +129,6 @@ app.post("/signUp", async (req, res) => {
     password: String
  */
 app.post("/login", async (req, res) => {
-    console.log(req.body);
     const inputs = req.body;
     if (!inputs) {
         return res.status(400).json({ msg: "Missing Request Body", sessionID: "" });
@@ -195,7 +193,8 @@ app.post("/getPokemon", async (req, res) => {
     if (!session) {
         return res.status(401).json({ msg: "Invalid Session" });
     }
-    return res.status(200).json(await Pokemon.find({ ownerName: session.username }));
+    let result = await Pokemon.find({ ownerName: session.username });
+    return res.status(200).json(result);
 });
 
 app.listen(PORT, async () => {
