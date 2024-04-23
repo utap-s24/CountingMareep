@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.countingmareep.ViewModel
 import com.example.countingmareep.databinding.FragmentSearchBinding
+import com.example.countingmareep.network.TeamResponse
 import com.example.countingmareep.ui.box.Ingredient
 import com.example.countingmareep.ui.box.Ingredients
 import com.example.countingmareep.ui.box.Nature
@@ -34,7 +35,7 @@ class SearchFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var teamAdapter: TeamAdapter
-    private lateinit var fakeTeams: List<Team>
+    private lateinit var fakeTeams: List<TeamResponse>
     private val viewModel: ViewModel by activityViewModels()
 
     data class Team(
@@ -50,7 +51,7 @@ class SearchFragment : Fragment() {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
 
         // Generate fake teams
-        fakeTeams = generateFakeTeams(30)
+        fakeTeams = viewModel.getAllTeams()
 
         setupRecyclerView()
         setupSearchBar()
@@ -58,20 +59,20 @@ class SearchFragment : Fragment() {
         return binding.root
     }
 
-    private fun generateFakeTeams(count: Int): List<Team> {
-        return List(count) { index ->
-            Team(
-                name = "Team ${index + 1}",
-                pokemonList = List(5) { generateRandomPokemonDataModel() }
-            )
-        }
-    }
+//    private fun generateFakeTeams(count: Int): List<Team> {
+//        return List(count) { index ->
+//            Team(
+//                name = "Team ${index + 1}",
+//                pokemonList = List(5) { generateRandomPokemonDataModel() }
+//            )
+//        }
+//    }
 
     private fun setupRecyclerView() {
         teamAdapter = TeamAdapter(context, fakeTeams, object : TeamAdapter.OnTeamClickListener {
-            override fun onTeamClick(team: SearchFragment.Team) {
+            override fun onTeamClick(team: TeamResponse) {
                 /* ToDo: Tap support */
-                Log.d(TAG, "Team ${team.name} clicked")
+                Log.d(TAG, "Team ${team.teamName} clicked")
             }
         })
 

@@ -1,6 +1,5 @@
 package com.example.countingmareep.ui.search
 
-import PokemonDataModel
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -13,12 +12,11 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.countingmareep.R
-import com.example.countingmareep.ui.box.PokemonData
 import java.io.IOException
 
 class PokemonAdapter(
     private val context: Context?,
-    private val pokemonList: List<PokemonDataModel>
+    private val pokemonList: List<Int>
 ) : RecyclerView.Adapter<PokemonAdapter.PokemonViewHolder>() {
 
     class PokemonViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -32,11 +30,11 @@ class PokemonAdapter(
     }
 
     override fun onBindViewHolder(holder: PokemonViewHolder, position: Int) {
-        val pokemon = pokemonList[position]
+        val pokemonDexEntry = pokemonList[position]
 
         // Load the image from assets
         try {
-            context?.assets?.open("pokemon/${pokemon.pokedexEntry}.png")?.use { inputStream ->
+            context?.assets?.open("pokemon/${pokemonDexEntry}.png")?.use { inputStream ->
                 val drawable = Drawable.createFromStream(inputStream, null)
                 holder.pokemonImage.setImageDrawable(drawable)
             }
@@ -46,8 +44,8 @@ class PokemonAdapter(
         }
 
         // Truncate the Pokémon's name to 6 characters and display it with the level
-        val truncatedName = if (pokemon.name.length > 6) "${pokemon.name.substring(0, 6)}" else pokemon.name
-        holder.pokemonLevel.text = "$truncatedName lv. ${pokemon.level}"
+//        val truncatedName = if (pokemonDexEntry.name.length > 6) "${pokemonDexEntry.name.substring(0, 6)}" else pokemonDexEntry.name
+//        holder.pokemonLevel.text = "$truncatedName lv. ${pokemonDexEntry.level}"
 
         // If this is the main Pokémon (first in the list), set a red border
         // Inside onBindViewHolder in PokemonAdapter

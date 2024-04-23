@@ -103,6 +103,10 @@ class ViewModel : ViewModel() {
         hoursSlept = hours
     }
 
+    fun getAllTeams(): List<TeamResponse> {
+        return allTeamsExisting
+    }
+
     fun loadTeams() {
         val client = OkHttpClient.Builder().build()
         val retrofit = Retrofit.Builder()
