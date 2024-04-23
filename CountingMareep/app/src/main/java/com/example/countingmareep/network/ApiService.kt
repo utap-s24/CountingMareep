@@ -1,7 +1,23 @@
 package com.example.countingmareep.network
 
+import com.example.countingmareep.ui.box.Ingredient
+import com.example.countingmareep.ui.box.NatureData
+import com.example.countingmareep.ui.box.modify.SubSkill
 import retrofit2.Call
 import retrofit2.http.*
+
+data class CreatePokemonRequest(
+    val sessionID: String,
+    val name: String,
+    val level: Int,
+    val pokedexEntry: Int,
+    val subSkills: List<Int>,
+    val ingredients: List<List<Int>>,
+    val nature: String,
+    val RP: Int,
+    val mainSkillLevel: Int,
+    val pokemonID: String
+)
 
 interface ApiService {
     @POST("login")
@@ -28,6 +44,9 @@ interface ApiService {
     fun getPokemon(
         @Field("sessionID") sessionID: String
     ): Call<List<PokemonResponse>>
+
+    @POST("createPokemon")
+    fun createPokemon(@Body request: CreatePokemonRequest): Call<UserResponse>
 
     @POST("getUserData")
     @FormUrlEncoded

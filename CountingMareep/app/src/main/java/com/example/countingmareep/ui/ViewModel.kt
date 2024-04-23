@@ -6,7 +6,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.countingmareep.network.ApiService
+import com.example.countingmareep.network.CreatePokemonRequest
 import com.example.countingmareep.network.PokemonResponse
 import com.example.countingmareep.network.UserResponse
 import com.example.countingmareep.ui.box.Ingredient
@@ -17,6 +19,7 @@ import com.example.countingmareep.ui.box.modify.SubSkill
 import com.example.countingmareep.ui.team_builder.PokemonTeam
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
+import okhttp3.internal.toImmutableList
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -66,12 +69,58 @@ class ViewModel : ViewModel() {
         return themeIsDark
     }
 
+    /**
+     * Creates a HTTP Request to Update the DB as well.
+     */
     fun addPokemon(pokemon: PokemonDataModel) {
-        val ingredientsList = pokemon.ingredients
-        Log.d("Ingredient Type", ingredientsList[0].id.ordinal.toString())
-        Log.d("Ingredient Quantity", ingredientsList[0].quantity.toString())
-
         pokemonList.add(pokemon)
+
+        val subSkillList: MutableList<Int> = mutableListOf()
+        for (subSkill in pokemon.subSkills) {
+            subSkillList.add(subSkill.id.ordinal)
+        }
+
+        val ingredientList: MutableList<List<Int>> = mutableListOf()
+        for (ingredient in pokemon.ingredients) {
+            ingredientList.add(listOf(ingredient.id.ordinal, ingredient.quantity))
+        }
+
+        val client = OkHttpClient.Builder().build()
+        val retrofit = Retrofit.Builder()
+            .baseUrl(MainActivity.BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val service = retrofit.create(ApiService::class.java)
+        val getCall = service.createPokemon(
+            CreatePokemonRequest(
+                sessionID,
+                pokemon.name,
+                pokemon.level,
+                pokemon.pokedexEntry,
+                subSkillList.toImmutableList(),
+                ingredientList.toImmutableList(),
+                pokemon.nature.nature,
+                pokemon.RP,
+                pokemon.mainSkillLevel,
+                pokemon.pokemonID
+            )
+        )
+        getCall.enqueue(object : Callback<UserResponse> {
+            override fun onResponse(
+                call: Call<UserResponse>,
+                response: Response<UserResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("XXX", "Created Pokemon")
+                }
+            }
+
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+
+            }
+        })
     }
 
     fun getDataList(): List<PokemonDataModel> {
@@ -128,17 +177,13 @@ class ViewModel : ViewModel() {
 
         val service = retrofit.create(ApiService::class.java)
         val getCall = service.getPokemon(sessionID)
+        pokemonList.clear()
         getCall.enqueue(object : Callback<List<PokemonResponse>> {
             override fun onResponse(
                 call: Call<List<PokemonResponse>>,
                 response: Response<List<PokemonResponse>>
             ) {
                 if (response.isSuccessful) {
-                    Toast.makeText(
-                        mainActivity,
-                        "Box Length ${response.body()?.size.toString()}",
-                        Toast.LENGTH_SHORT
-                    ).show()
                     val list = response.body()
                     if (list != null) {
                         // Populate Pokemon Box
@@ -160,7 +205,7 @@ class ViewModel : ViewModel() {
                                     )
                                 )
                             }
-                            addPokemon(
+                            pokemonList.add(
                                 PokemonDataModel(
                                     pokemonRes.name,
                                     pokemonRes.level,
@@ -175,7 +220,6 @@ class ViewModel : ViewModel() {
                             )
                         }
                     }
-                    Log.d("View Model Box", pokemonList.toString())
                     mainActivity.loggedInRedirect()
                 } else {
                     Toast.makeText(mainActivity, "Bad Code ${response.code()}", Toast.LENGTH_SHORT)

@@ -106,11 +106,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun saveTheme(isDark: Boolean): Unit {
-//        val theme = if (isDark) {
-//            AppCompatDelegate.MODE_NIGHT_YES
-//        } else {
-//            AppCompatDelegate.MODE_NIGHT_NO
-//        }
         val currentDest = navController.currentDestination
         val currentNav = if (currentDest != null) {
             currentDest.id

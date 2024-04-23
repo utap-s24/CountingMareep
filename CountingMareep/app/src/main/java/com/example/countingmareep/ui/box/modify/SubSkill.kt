@@ -32,7 +32,7 @@ enum class Skills {
     SkillTriggerS
 }
 
-class SubSkill(id: Skills) {
+class SubSkill(val id: Skills) {
     companion object {
         val SKILLS = listOf(
             SkillData(
