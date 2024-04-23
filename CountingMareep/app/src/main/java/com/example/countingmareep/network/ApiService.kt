@@ -45,6 +45,12 @@ interface ApiService {
         @Field("password") password: String
     ): Call<UserResponse>
 
+    @POST("logout")
+    @FormUrlEncoded
+    fun logout(
+        @Field("sessionID") sessionID: String
+    ): Call<UserResponse>
+
     @POST("signUp")
     @FormUrlEncoded
     fun createUser(

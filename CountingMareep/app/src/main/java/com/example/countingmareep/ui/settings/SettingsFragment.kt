@@ -14,6 +14,7 @@ import com.example.countingmareep.ViewModel
 import com.example.countingmareep.databinding.FragmentSettingsBinding
 import com.example.countingmareep.network.ApiService
 import com.example.countingmareep.network.UserDataResponse
+import com.example.countingmareep.network.UserResponse
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,6 +25,9 @@ import java.io.IOException
 import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.Date
+import androidx.navigation.fragment.findNavController
+import com.example.countingmareep.R
+
 
 class SettingsFragment : Fragment() {
     private var _binding: FragmentSettingsBinding? = null
@@ -52,6 +56,10 @@ class SettingsFragment : Fragment() {
 
         binding.saveButton.setOnClickListener {
             saveUserData()
+        }
+
+        binding.logoutButton.setOnClickListener {
+            logout()
         }
 
         return root
@@ -135,7 +143,40 @@ class SettingsFragment : Fragment() {
         val netDate = Date(millis)
         return sdf.format(netDate)
     }
-    
+
+    private fun logout() {
+        val sessionID = viewModel.getSession()
+        val client = OkHttpClient.Builder().build()
+        val retrofit = Retrofit.Builder()
+            .baseUrl(MainActivity.BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val service = retrofit.create(ApiService::class.java)
+        val call = service.logout(sessionID)
+
+        call.enqueue(object : Callback<UserResponse> {
+        override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+            Log.d("Logout", "Response: ${response.code()}")
+            if (response.isSuccessful) {
+                // Assume viewModel has a method to clear the session data
+                viewModel.clearSession()
+                // Navigate to SplashFragment using the defined action
+                findNavController().navigate(R.id.action_settings_to_splash)
+                Toast.makeText(context, "Logged out successfully", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Failed to log out", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+            Toast.makeText(context, "Error: ${t.message}", Toast.LENGTH_LONG).show()
+        }
+    })
+}
+
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

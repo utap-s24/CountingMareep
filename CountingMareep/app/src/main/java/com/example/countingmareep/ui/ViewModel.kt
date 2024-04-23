@@ -125,6 +125,10 @@ class ViewModel : ViewModel() {
         return allTeamsExisting
     }
 
+    fun clearSession() {
+        sessionID = ""
+    }
+
     fun loadTeams() {
         val client = OkHttpClient.Builder().build()
         val retrofit = Retrofit.Builder()
