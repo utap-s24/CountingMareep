@@ -1,5 +1,6 @@
 package com.example.countingmareep.ui.settings
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,6 +20,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
+import java.io.InputStream
 
 class SettingsFragment : Fragment() {
     private var _binding: FragmentSettingsBinding? = null
@@ -29,10 +32,18 @@ class SettingsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        val mainActivity = activity as MainActivity
 
         binding.themeToggle.setOnCheckedChangeListener { _, isChecked ->
-            val mainActivity = activity as MainActivity
             mainActivity.saveTheme(isChecked)
+        }
+
+        try {
+            val ims: InputStream = mainActivity.assets.open("icons/${viewModel.getIcon()}.png")
+            val d = Drawable.createFromStream(ims, null)
+            binding.settingsImage.setImageDrawable(d)
+            ims.close()
+        } catch (ex: IOException) {
         }
 
         loadUserData()

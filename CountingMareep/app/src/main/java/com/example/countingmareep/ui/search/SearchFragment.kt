@@ -10,8 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.countingmareep.ViewModel
 import com.example.countingmareep.databinding.FragmentSearchBinding
 import com.example.countingmareep.ui.box.Ingredient
 import com.example.countingmareep.ui.box.Ingredients
@@ -33,6 +35,7 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var teamAdapter: TeamAdapter
     private lateinit var fakeTeams: List<Team>
+    private val viewModel: ViewModel by activityViewModels()
 
     data class Team(
         val name: String,

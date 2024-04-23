@@ -40,11 +40,12 @@ class LoginFragment : Fragment() {
         val mainActivity = activity as MainActivity
         binding.usernameInput.setText(mainActivity.getUser())
         binding.passwordInput.setText(mainActivity.getPass())
-
+        binding.loginButton.isEnabled = true
         return root
     }
 
     private fun performLogin() {
+        binding.loginButton.isEnabled = false
         val username = binding.usernameInput.text.toString()
         val password = binding.passwordInput.text.toString()
 
@@ -65,6 +66,7 @@ class LoginFragment : Fragment() {
                     if (response.body()?.sessionID != null) {
                         viewModel.setSession(response.body()?.sessionID!!)
                         mainActivity.saveUserPass(username, password)
+                        viewModel.loadTeams()
                         viewModel.loadPokemonBox(mainActivity)
                     }
                 } else {
@@ -75,12 +77,14 @@ class LoginFragment : Fragment() {
                         "Login failed: ${errorResponse.msg}",
                         Toast.LENGTH_LONG
                     ).show()
+                    binding.loginButton.isEnabled = true
                 }
             }
 
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 Log.d("Error", "${t.message}")
                 Toast.makeText(getActivity(), "Error: ${t.message}", Toast.LENGTH_LONG).show()
+                binding.loginButton.isEnabled = true
             }
         })
     }

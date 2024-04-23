@@ -9,6 +9,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import com.example.countingmareep.MainActivity
+import com.example.countingmareep.ViewModel
 import com.example.countingmareep.databinding.FragmentTeamBuilderBinding
 import com.example.countingmareep.ui.box.PokemonData
 import com.example.countingmareep.ui.box.Nature
@@ -25,64 +28,132 @@ class TeamBuilderFragment : Fragment() {
     private var _binding: FragmentTeamBuilderBinding? = null
     private val binding get() = _binding!!
     private val random = Random()
+    private val viewModel: ViewModel by activityViewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentTeamBuilderBinding.inflate(inflater, container, false)
         val root: View = binding.root
-    
-        val pokemonDataModels = List(5) { generateRandomPokemonDataModel() } // Generate 5 random Pokemon
-        val totalRP = pokemonDataModels.sumOf { it.RP }
-    
-        populatePokemonPreview(binding.imagePokemonMain, binding.textPokemonMainDetails, pokemonDataModels[0])
-        populatePokemonPreview(binding.imagePokemonPreview1, binding.textPokemonPreview1Details, pokemonDataModels[1])
-        populatePokemonPreview(binding.imagePokemonPreview2, binding.textPokemonPreview2Details, pokemonDataModels[2])
-        populatePokemonPreview(binding.imagePokemonPreview3, binding.textPokemonPreview3Details, pokemonDataModels[3])
-        populatePokemonPreview(binding.imagePokemonPreview4, binding.textPokemonPreview4Details, pokemonDataModels[4])
-    
-        binding.textTotalTeamRp.text = "Total Team RP: $totalRP"
-    
+
+        val pokemonData = viewModel.getDataList()
+        var currentTeam = loadTeam(pokemonData)
+        val mainActivity = activity as MainActivity
+
+        binding.buttonGenerateAltTeam.setOnClickListener {
+            val sortedPokemon = pokemonData.sortedByDescending { it.RP }
+            currentTeam = loadTeam(sortedPokemon)
+        }
+
+        binding.buttonRandomTeam.setOnClickListener {
+            val shuffledPokemon = pokemonData.shuffled()
+            currentTeam = loadTeam(shuffledPokemon)
+        }
+
+        binding.buttonSave.setOnClickListener {
+            if (currentTeam.isEmpty()) {
+                return@setOnClickListener
+            }
+            val pok1: PokemonDataModel = currentTeam[0]
+            var pok2: PokemonDataModel? = null
+            var pok3: PokemonDataModel? = null
+            var pok4: PokemonDataModel? = null
+            var pok5: PokemonDataModel? = null
+            if (currentTeam.size > 1) {
+                pok2 = currentTeam[1]
+            }
+            if (currentTeam.size > 2) {
+                pok3 = currentTeam[2]
+            }
+            if (currentTeam.size > 3) {
+                pok4 = currentTeam[3]
+            }
+            if (currentTeam.size > 4) {
+                pok5 = currentTeam[4]
+            }
+            viewModel.addTeam(
+                PokemonTeam(
+                    binding.editTeamName.text.toString(),
+                    pok1,
+                    pok2,
+                    pok3,
+                    pok4,
+                    pok5
+                ), mainActivity
+            )
+        }
         return root
     }
-    
 
-    private fun populatePokemonPreview(imageView: ImageView, textView: TextView, pokemonDataModel: PokemonDataModel) {
-        try {
-            requireActivity().assets.open("pokemon/${pokemonDataModel.pokedexEntry}.png").use { inputStream ->
-                val drawable = Drawable.createFromStream(inputStream, null)
-                imageView.setImageDrawable(drawable)
+    private fun loadTeam(pokemonData: List<PokemonDataModel>): List<PokemonDataModel> {
+        val teamList: MutableList<PokemonDataModel> = mutableListOf()
+        for (i in 0..4) {
+            if (i < pokemonData.size) {
+                teamList.add(pokemonData[i])
             }
+        }
+        val totalRP = teamList.sumOf { it.RP }
+
+        if (teamList.size > 0) {
+            populatePokemonPreview(
+                binding.imagePokemonMain,
+                binding.textPokemonMainDetails,
+                teamList[0]
+            )
+            if (teamList.size > 1) {
+                populatePokemonPreview(
+                    binding.imagePokemonPreview1,
+                    binding.textPokemonPreview1Details,
+                    teamList[1]
+                )
+                if (teamList.size > 2) {
+                    populatePokemonPreview(
+                        binding.imagePokemonPreview2,
+                        binding.textPokemonPreview2Details,
+                        teamList[2]
+                    )
+                    if (teamList.size > 3) {
+                        populatePokemonPreview(
+                            binding.imagePokemonPreview3,
+                            binding.textPokemonPreview3Details,
+                            teamList[3]
+                        )
+                        if (teamList.size > 4) {
+                            populatePokemonPreview(
+                                binding.imagePokemonPreview4,
+                                binding.textPokemonPreview4Details,
+                                teamList[4]
+                            )
+                        }
+                    }
+                }
+            }
+        }
+        binding.textTotalTeamRp.text = "Total Team RP: $totalRP"
+        return teamList
+    }
+
+
+    private fun populatePokemonPreview(
+        imageView: ImageView,
+        textView: TextView,
+        pokemonDataModel: PokemonDataModel
+    ) {
+        try {
+            requireActivity().assets.open("pokemon/${pokemonDataModel.pokedexEntry}.png")
+                .use { inputStream ->
+                    val drawable = Drawable.createFromStream(inputStream, null)
+                    imageView.setImageDrawable(drawable)
+                }
         } catch (ex: IOException) {
             ex.printStackTrace()
             // Handle the case where the image is not found. Maybe set a default image.
         }
-    
+
         textView.text = "${pokemonDataModel.name} lv. ${pokemonDataModel.level}"
     }
-    
-
-    private fun generateRandomPokemonDataModel(): PokemonDataModel {
-        val random = Random()
-        val pokemonBaseData = PokemonData.getRandom()
-        val level = random.nextInt(30) + 1  // Level from 1 to 30
-        val rp = random.nextInt(100) + 1  // RP for example, replace with your logic
-        val nature = Nature.getRandom()
-        val subSkills = listOf(SubSkill.fromIndex(random.nextInt(SubSkill.subSkillNames.size)))
-        val ingredients = listOf(Ingredient(Ingredients.values()[random.nextInt(Ingredients.values().size)], random.nextInt(10) + 1))
-        val mainSkillLevel = random.nextInt(5) + 1  // MainSkillLevel from 1 to 5
-    
-        return PokemonDataModel(
-            name = pokemonBaseData.name,
-            level = level,
-            pokedexEntry = pokemonBaseData.dexNumber,
-            subSkills = subSkills,
-            ingredients = ingredients,
-            nature = nature,
-            RP = rp,
-            mainSkillLevel = mainSkillLevel,
-            pokemonID = UUID.randomUUID().toString()
-        )
-    }
-    
 
     override fun onDestroyView() {
         super.onDestroyView()

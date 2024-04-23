@@ -22,8 +22,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
     companion object {
-//        val BASE_URL = "http://192.168.1.244:3030/"
-        val BASE_URL = "https://countingmareep.onrender.com/"
+        val BASE_URL = "http://192.168.1.244:3030/"
+//        val BASE_URL = "https://countingmareep.onrender.com/"
     }
     private lateinit var binding: ActivityMainBinding
     private val viewModel: ViewModel by viewModels()

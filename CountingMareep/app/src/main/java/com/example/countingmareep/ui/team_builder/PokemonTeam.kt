@@ -4,6 +4,7 @@ import PokemonDataModel
 import com.example.countingmareep.ui.box.PokemonData
 
 class PokemonTeam(
+    val teamName: String,
     val pok1: PokemonDataModel,
     val pok2: PokemonDataModel?,
     val pok3: PokemonDataModel?,

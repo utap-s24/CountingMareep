@@ -9,6 +9,7 @@ import cors from 'cors';
 import { User } from "./schemas/user.js";
 import { Session } from './session.js';
 import { Pokemon } from './schemas/pokemon.js';
+import { Team } from './schemas/team.js';
 
 const app = express();
 const PORT = process.env.PORT || 3030;
@@ -216,7 +217,6 @@ app.post("/updatePokemon", async (req, res) => {
  * sessionID 
  */
 app.post("/getPokemon", async (req, res) => {
-    console.log("Get", req.body);
     const inputs = req.body;
     if (!inputs) {
         return res.status(400).json({ msg: "Missing Request Body" });
@@ -225,10 +225,97 @@ app.post("/getPokemon", async (req, res) => {
     if (!session) {
         return res.status(401).json({ msg: "Invalid Session" });
     }
-    console.log("Username", session.username);
     let result = await Pokemon.find({ ownerName: session.username });
-    console.log(result);
     return res.status(200).json(result);
+});
+
+app.post("/getSinglePokemon", async (req, res) => {
+    const inputs = req.body;
+    if (!inputs) {
+        return res.status(400).json({ msg: "Missing Request Body" });
+    }
+    const relevantArgs = ["pokemonID"];
+    if (isAnyArgUndefined(inputs, relevantArgs)) {
+        return res.status(401).json({ msg: "Missing Field" });
+    }
+
+    return res.status(200).json(await Pokemon.findOne({ pokemonID: inputs.pokemonID }));
+});
+
+// Get all teams for the current user
+app.post("/getTeams", async (req, res) => {
+    const inputs = req.body;
+    if (!inputs) {
+        return res.status(400).json({ msg: "Missing Request Body" });
+    }
+    const relevantArgs = ["sessionID"];
+    if (isAnyArgUndefined(inputs, relevantArgs)) {
+        return res.status(401).json({ msg: "Missing Field" });
+    }
+    // Validate Session
+    const session = sessionsList[inputs.sessionID];
+    if (!session) {
+        return res.status(401).json({ msg: "Invalid Session" });
+    }
+
+    return res.status(200).json(await Team.find({ ownerName: session.username }));
+});
+
+app.post("/getAllTeams", async (req, res) => {
+    const inputs = req.body;
+    if (!inputs) {
+        return res.status(400).json({ msg: "Missing Request Body" });
+    }
+
+    let teamsList = await Team.find({});
+    const outList = [];
+    for (const team of teamsList) {
+        const idList = [team.pokemon1ID, team.pokemon2ID, team.pokemon3ID, team.pokemon4ID, team.pokemon5ID];
+        let out = {
+            "ownerName": team.ownerName,
+            "teamName": team.teamName,
+        };
+        let index = 1;
+        for (const id of idList) {
+            if (id == "null") {
+                out[`pok${index}Entry`] = -1;
+            } else {
+                out[`pok${index}Entry`] = (await Pokemon.findOne({ pokemonID: id })).pokedexEntry;
+            }
+            index++;
+        }
+        outList.push(out);
+    }
+
+    return res.status(200).json(outList);
+});
+
+app.post("/createTeam", async (req, res) => {
+    const inputs = req.body;
+    if (!inputs) {
+        return res.status(400).json({ msg: "Missing Request Body" });
+    }
+    const relevantArgs = ["sessionID", "teamName", "pokemon1ID", "pokemon2ID", "pokemon3ID", "pokemon4ID", "pokemon5ID"];
+    if (isAnyArgUndefined(inputs, relevantArgs)) {
+        return res.status(401).json({ msg: "Missing Field" });
+    }
+    // Validate Session
+    const session = sessionsList[inputs.sessionID];
+    if (!session) {
+        return res.status(401).json({ msg: "Invalid Session" });
+    }
+
+    await Team.insertMany({
+        ownerName: session.username,
+        teamName: inputs.teamName,
+        pokemon1ID: inputs.pokemon1ID,
+        pokemon2ID: inputs.pokemon2ID,
+        pokemon3ID: inputs.pokemon3ID,
+        pokemon4ID: inputs.pokemon4ID,
+        pokemon5ID: inputs.pokemon5ID
+    });
+
+    return res.status(200).json({ msg: "Success" });
 });
 
 app.listen(PORT, async () => {

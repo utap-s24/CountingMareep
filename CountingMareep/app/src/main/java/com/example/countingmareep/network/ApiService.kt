@@ -19,6 +19,24 @@ data class CreatePokemonRequest(
     val pokemonID: String
 )
 
+data class CreateTeamRequest(
+    val sessionID: String,
+    val teamName: String,
+    val pokemon1ID: String,
+    val pokemon2ID: String, // "" if Pokemon not Defined
+    val pokemon3ID: String,
+    val pokemon4ID: String,
+    val pokemon5ID: String
+)
+
+data class SinglePokemonRequest(
+    val pokemonID: String
+)
+
+data class BasicSessionRequest(
+    val sessionID: String
+)
+
 interface ApiService {
     @POST("login")
     @FormUrlEncoded
@@ -50,6 +68,15 @@ interface ApiService {
 
     @POST("updatePokemon")
     fun updatePokemon(@Body request: CreatePokemonRequest): Call<UserResponse>
+
+    @POST("getSinglePokemon")
+    fun getSinglePokemon(@Body request: SinglePokemonRequest): Call<PokemonResponse>
+
+    @POST("createTeam")
+    fun createTeam(@Body request: CreateTeamRequest): Call<UserResponse>
+
+    @POST("getAllTeams")
+    fun getAllTeams(@Body request: BasicSessionRequest): Call<List<TeamResponse>>
 
     @POST("getUserData")
     @FormUrlEncoded

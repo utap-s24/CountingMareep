@@ -8,8 +8,12 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.countingmareep.network.ApiService
+import com.example.countingmareep.network.BasicSessionRequest
 import com.example.countingmareep.network.CreatePokemonRequest
+import com.example.countingmareep.network.CreateTeamRequest
 import com.example.countingmareep.network.PokemonResponse
+import com.example.countingmareep.network.SinglePokemonRequest
+import com.example.countingmareep.network.TeamResponse
 import com.example.countingmareep.network.UserResponse
 import com.example.countingmareep.ui.box.Ingredient
 import com.example.countingmareep.ui.box.Ingredients
@@ -41,6 +45,8 @@ class ViewModel : ViewModel() {
     private var selectedBoxPokemon: Int = -1
     private var pokemonList: MutableList<PokemonDataModel> = mutableListOf()
     private val teamsList: MutableList<PokemonTeam> = mutableListOf()
+
+    private val allTeamsExisting: MutableList<TeamResponse> = mutableListOf()
 
     init {
         Log.d("XXX", "VIEW MODEL INITING")
@@ -97,8 +103,135 @@ class ViewModel : ViewModel() {
         hoursSlept = hours
     }
 
-    fun addTeam(team: PokemonTeam) {
+    fun loadTeams() {
+        val client = OkHttpClient.Builder().build()
+        val retrofit = Retrofit.Builder()
+            .baseUrl(MainActivity.BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val service = retrofit.create(ApiService::class.java)
+        val getCall = service.getAllTeams(BasicSessionRequest(sessionID))
+        getCall.enqueue(object : Callback<List<TeamResponse>> {
+            override fun onResponse(
+                call: Call<List<TeamResponse>>,
+                response: Response<List<TeamResponse>>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("XXX", "Got All Teams")
+                    val body = response.body()
+                    if (body != null) {
+                        for (teamResponse in body) {
+                            allTeamsExisting.add(teamResponse)
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<List<TeamResponse>>, t: Throwable) {}
+        })
+    }
+
+//    fun getSingularPokemon(id: String): PokemonDataModel {
+//        val client = OkHttpClient.Builder().build()
+//        val retrofit = Retrofit.Builder()
+//            .baseUrl(MainActivity.BASE_URL)
+//            .client(client)
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .build()
+//
+//        val service = retrofit.create(ApiService::class.java)
+//        val getCall = service.getSinglePokemon(
+//            SinglePokemonRequest(id)
+//        )
+//        getCall.enqueue(object : Callback<PokemonResponse> {
+//            override fun onResponse(
+//                call: Call<PokemonResponse>,
+//                response: Response<PokemonResponse>
+//            ) {
+//                if (response.isSuccessful) {
+//                    Log.d("XXX", "Gotten Pokemon")
+//                    val data = response.body()
+//                    if (data != null) {
+//                        /**
+//                         * pokedexEntry: Int,
+//                         *     val subSkills: List<SubSkill>,
+//                         *     val ingredients: List<Ingredient>,
+//                         *     val nature: NatureData,
+//                         *     val RP: Int,
+//                         *     val mainSkillLevel: Int,
+//                         *     val pokemonID: String
+//                         */
+//                        val subSkillList = data.subSkills
+//                        val realSubSkills: MutableList<SubSkill> = mutableListOf()
+//                        for (subSkillID in subSkillList) {
+//                            realSubSkills.add(SubSkill(SubSkill.getSkillFromOrdinal(subSkillID)))
+//                        }
+//                        // Recreate Ingredients
+//                        val ingredientList = data.ingredients
+//                        val realIngredients: MutableList<Ingredient> = mutableListOf()
+//                        for (ingredient in ingredientList) {
+//                            realIngredients.add(
+//                                Ingredient(
+//                                    Ingredient.getIngredientFromOrdinal(ingredient[0]),
+//                                    ingredient[1]
+//                                )
+//                            )
+//                        }
+//
+//                        PokemonDataModel(
+//                            data.name, data.level, data.pokedexEntry,
+//                            realSubSkills,
+//                            realIngredients,
+//                            Nature.natureFromName(data.nature),
+//                            data.RP,
+//                            data.mainSkillLevel,
+//                            data.pokemonID
+//                        )
+//                    }
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<PokemonResponse>, t: Throwable) {}
+//        })
+//    }
+
+    fun addTeam(team: PokemonTeam, mainActivity: MainActivity) {
         teamsList.add(team)
+
+        val client = OkHttpClient.Builder().build()
+        val retrofit = Retrofit.Builder()
+            .baseUrl(MainActivity.BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val service = retrofit.create(ApiService::class.java)
+        val getCall = service.createTeam(
+            CreateTeamRequest(
+                sessionID,
+                team.teamName,
+                team.pok1.pokemonID,
+                "${team.pok2?.pokemonID}",
+                "${team.pok3?.pokemonID}",
+                "${team.pok4?.pokemonID}",
+                "${team.pok5?.pokemonID}",
+            )
+        )
+        getCall.enqueue(object : Callback<UserResponse> {
+            override fun onResponse(
+                call: Call<UserResponse>,
+                response: Response<UserResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Toast.makeText(mainActivity, "Success", Toast.LENGTH_SHORT).show()
+                    Log.d("XXX", "Created Team")
+                }
+            }
+
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {}
+        })
     }
 
     fun getTeamCount(): Int {
@@ -227,6 +360,7 @@ class ViewModel : ViewModel() {
                     Log.d("XXX", "Created Pokemon")
                 }
             }
+
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {}
         })
     }
@@ -273,6 +407,7 @@ class ViewModel : ViewModel() {
                     Log.d("XXX", "Updated Pokemon")
                 }
             }
+
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {}
         })
     }
