@@ -1,22 +1,22 @@
 package com.example.countingmareep.ui.box
 
 enum class Ingredients {
-    LARGE_LEEK,
-    TASTY_MUSHROOM,
-    FANCY_EGG,
-    SOFT_POTATO,
-    FANCY_APPLE,
-    FIERY_HERB,
     BEAN_SAUSAGE,
-    MOOMOO_MILK,
+    FANCY_APPLE,
+    FANCY_EGG,
+    FIERY_HERB,
+    GREENGRASS_CORN,
+    GREENGRASS_SOYBEANS,
     HONEY,
+    LARGE_LEEK,
+    MOOMOO_MILK,
     PURE_OIL,
-    WARMING_GINGER,
+    SLOWPOKE_TAIL,
     SNOOZY_TOMATO,
     SOOTHING_CACAO,
-    SLOWPOKE_TAIL,
-    GREENGRASS_SOYBEAN,
-    GREENGRASS_CORN
+    SOFT_POTATO,
+    TASTY_MUSHROOM,
+    WARMING_GINGER
 }
 
 class Ingredient(var id: Ingredients, var quantity: Int) {

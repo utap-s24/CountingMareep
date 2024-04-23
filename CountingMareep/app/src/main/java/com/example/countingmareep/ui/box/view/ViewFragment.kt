@@ -129,6 +129,7 @@ class ViewFragment : Fragment() {
             selectedPokemon.name = nameStr
             selectedPokemon.mainSkillLevel = skillLevel
             selectedPokemon.RP = RP
+            viewModel.updatePokemon(selectedPokemon)
             // Get back to Box View
             mainActivity.navController.popBackStack()
         }

@@ -48,6 +48,9 @@ interface ApiService {
     @POST("createPokemon")
     fun createPokemon(@Body request: CreatePokemonRequest): Call<UserResponse>
 
+    @POST("updatePokemon")
+    fun updatePokemon(@Body request: CreatePokemonRequest): Call<UserResponse>
+
     @POST("getUserData")
     @FormUrlEncoded
     fun getUserData(

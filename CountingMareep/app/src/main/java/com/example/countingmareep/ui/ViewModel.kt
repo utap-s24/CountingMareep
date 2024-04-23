@@ -69,60 +69,6 @@ class ViewModel : ViewModel() {
         return themeIsDark
     }
 
-    /**
-     * Creates a HTTP Request to Update the DB as well.
-     */
-    fun addPokemon(pokemon: PokemonDataModel) {
-        pokemonList.add(pokemon)
-
-        val subSkillList: MutableList<Int> = mutableListOf()
-        for (subSkill in pokemon.subSkills) {
-            subSkillList.add(subSkill.id.ordinal)
-        }
-
-        val ingredientList: MutableList<List<Int>> = mutableListOf()
-        for (ingredient in pokemon.ingredients) {
-            ingredientList.add(listOf(ingredient.id.ordinal, ingredient.quantity))
-        }
-
-        val client = OkHttpClient.Builder().build()
-        val retrofit = Retrofit.Builder()
-            .baseUrl(MainActivity.BASE_URL)
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val service = retrofit.create(ApiService::class.java)
-        val getCall = service.createPokemon(
-            CreatePokemonRequest(
-                sessionID,
-                pokemon.name,
-                pokemon.level,
-                pokemon.pokedexEntry,
-                subSkillList.toImmutableList(),
-                ingredientList.toImmutableList(),
-                pokemon.nature.nature,
-                pokemon.RP,
-                pokemon.mainSkillLevel,
-                pokemon.pokemonID
-            )
-        )
-        getCall.enqueue(object : Callback<UserResponse> {
-            override fun onResponse(
-                call: Call<UserResponse>,
-                response: Response<UserResponse>
-            ) {
-                if (response.isSuccessful) {
-                    Log.d("XXX", "Created Pokemon")
-                }
-            }
-
-            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-
-            }
-        })
-    }
-
     fun getDataList(): List<PokemonDataModel> {
         return pokemonList
     }
@@ -231,6 +177,103 @@ class ViewModel : ViewModel() {
                 Toast.makeText(mainActivity, "Failed Some Reason ${t.message}", Toast.LENGTH_SHORT)
                     .show()
             }
+        })
+    }
+
+    /**
+     * Creates a HTTP Request to Update the DB as well.
+     */
+    fun addPokemon(pokemon: PokemonDataModel) {
+        pokemonList.add(pokemon)
+
+        val subSkillList: MutableList<Int> = mutableListOf()
+        for (subSkill in pokemon.subSkills) {
+            subSkillList.add(subSkill.id.ordinal)
+        }
+
+        val ingredientList: MutableList<List<Int>> = mutableListOf()
+        for (ingredient in pokemon.ingredients) {
+            ingredientList.add(listOf(ingredient.id.ordinal, ingredient.quantity))
+        }
+
+        val client = OkHttpClient.Builder().build()
+        val retrofit = Retrofit.Builder()
+            .baseUrl(MainActivity.BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val service = retrofit.create(ApiService::class.java)
+        val getCall = service.createPokemon(
+            CreatePokemonRequest(
+                sessionID,
+                pokemon.name,
+                pokemon.level,
+                pokemon.pokedexEntry,
+                subSkillList.toImmutableList(),
+                ingredientList.toImmutableList(),
+                pokemon.nature.nature,
+                pokemon.RP,
+                pokemon.mainSkillLevel,
+                pokemon.pokemonID
+            )
+        )
+        getCall.enqueue(object : Callback<UserResponse> {
+            override fun onResponse(
+                call: Call<UserResponse>,
+                response: Response<UserResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("XXX", "Created Pokemon")
+                }
+            }
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {}
+        })
+    }
+
+    fun updatePokemon(pokemon: PokemonDataModel) {
+        val subSkillList: MutableList<Int> = mutableListOf()
+        for (subSkill in pokemon.subSkills) {
+            subSkillList.add(subSkill.id.ordinal)
+        }
+
+        val ingredientList: MutableList<List<Int>> = mutableListOf()
+        for (ingredient in pokemon.ingredients) {
+            ingredientList.add(listOf(ingredient.id.ordinal, ingredient.quantity))
+        }
+
+        val client = OkHttpClient.Builder().build()
+        val retrofit = Retrofit.Builder()
+            .baseUrl(MainActivity.BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val service = retrofit.create(ApiService::class.java)
+        val getCall = service.updatePokemon(
+            CreatePokemonRequest(
+                sessionID,
+                pokemon.name,
+                pokemon.level,
+                pokemon.pokedexEntry,
+                subSkillList.toImmutableList(),
+                ingredientList.toImmutableList(),
+                pokemon.nature.nature,
+                pokemon.RP,
+                pokemon.mainSkillLevel,
+                pokemon.pokemonID
+            )
+        )
+        getCall.enqueue(object : Callback<UserResponse> {
+            override fun onResponse(
+                call: Call<UserResponse>,
+                response: Response<UserResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("XXX", "Updated Pokemon")
+                }
+            }
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {}
         })
     }
 
