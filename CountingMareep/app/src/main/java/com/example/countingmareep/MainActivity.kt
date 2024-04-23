@@ -30,6 +30,8 @@ class MainActivity : AppCompatActivity() {
     private val PREFS_FILENAME = "my_app_settings"
     private val PREFS_THEME = "MY_THEME"
     private val PREFS_NAV = "MY_NAV"
+    private val PREFS_NAME = "MY_USERNAME"
+    private val PREFS_PASS = "MY_PASSWORD"
     private lateinit var appSettings: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -127,6 +129,31 @@ class MainActivity : AppCompatActivity() {
 
     fun setTitle(title: String) {
         supportActionBar?.title = title
+    }
+
+    fun saveUserPass(username: String, password: String) {
+        val editor = appSettings.edit()
+        editor.putString(PREFS_NAME, username)
+        editor.putString(PREFS_PASS, password)
+        editor.apply()
+    }
+
+    fun getUser(): String {
+        val name = appSettings.getString(PREFS_NAME, "")
+        if(name == null) {
+            return ""
+        } else {
+            return name
+        }
+    }
+
+    fun getPass(): String {
+        val pass = appSettings.getString(PREFS_PASS, "")
+        if(pass == null) {
+            return ""
+        } else {
+            return pass
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

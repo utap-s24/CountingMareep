@@ -1,6 +1,7 @@
 package com.example.countingmareep.ui.splash
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import com.example.countingmareep.ViewModel
 import com.example.countingmareep.databinding.FragmentLoginBinding
 import com.example.countingmareep.network.ApiService
 import com.example.countingmareep.network.UserResponse
+import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -34,6 +36,9 @@ class LoginFragment : Fragment() {
         binding.loginButton.setOnClickListener {
             performLogin()
         }
+        val mainActivity = activity as MainActivity
+        binding.usernameInput.setText(mainActivity.getUser())
+        binding.passwordInput.setText(mainActivity.getPass())
 
         return root
     }
@@ -58,13 +63,16 @@ class LoginFragment : Fragment() {
                     val mainActivity = activity as MainActivity
                     if (response.body()?.sessionID != null) {
                         viewModel.setSession(response.body()?.sessionID!!)
-                        Toast.makeText(getActivity(), "Login successful! ${response.body()?.sessionID!!}", Toast.LENGTH_LONG).show()
+                        mainActivity.saveUserPass(username, password)
+                        Toast.makeText(getActivity(), "Login successful!", Toast.LENGTH_LONG).show()
                     }
                     mainActivity.loggedInRedirect()
                 } else {
+                    val gson = Gson()
+                    val errorResponse = gson.fromJson(response.errorBody()?.charStream(), UserResponse::class.java)
                     Toast.makeText(
                         getActivity(),
-                        "Login failed: ${response.body()?.msg}",
+                        "Login failed: ${errorResponse.msg}",
                         Toast.LENGTH_LONG
                     ).show()
                 }

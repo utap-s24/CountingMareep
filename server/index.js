@@ -198,28 +198,6 @@ app.post("/getPokemon", async (req, res) => {
     return res.status(200).json(await Pokemon.find({ name: session.username }));
 });
 
-/*
-    rank: Number,
-    befriended: Number,
-    hoursSlept: Number,
-    birthday: BigInt
-*/
-app.post("/updateSettings", async (req, res) => {
-    const inputs = req.body;
-    if (!inputs) {
-        return res.status(400).json({ msg: "Missing Request Body" });
-    }
-    const relevantArgs = ["sessionID", "rank", "befriended", "hoursSlept", "birthday"];
-    if (isAnyArgUndefined(inputs, relevantArgs)) {
-        return res.status(401).json({ msg: "Missing Field" });
-    }
-    // Validate Session
-    const session = sessionsList[inputs.sessionID];
-    if (!session) {
-        return res.status(401).json({ msg: "Invalid Session" });
-    }
-});
-
 app.listen(PORT, async () => {
     await connectToDB();
     console.log(`Listening at http://localhost:${process.env.PORT}`);

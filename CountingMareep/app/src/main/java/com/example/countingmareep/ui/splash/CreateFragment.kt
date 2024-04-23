@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.example.countingmareep.databinding.FragmentCreateBinding
 import com.example.countingmareep.network.ApiService
 import com.example.countingmareep.network.UserResponse
+import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -65,7 +66,9 @@ class CreateFragment : Fragment() {
                 if (response.isSuccessful) {
                     Toast.makeText(getActivity(), "Account created successfully!", Toast.LENGTH_LONG).show()
                 } else {
-                    Toast.makeText(getActivity(), "Failed to create account: ${response.body()?.msg}", Toast.LENGTH_LONG).show()
+                    val gson = Gson()
+                    val errorResponse = gson.fromJson(response.errorBody()?.charStream(), UserResponse::class.java)
+                    Toast.makeText(getActivity(), "Failed to create account: ${errorResponse.msg}", Toast.LENGTH_LONG).show()
                 }
             }
 
