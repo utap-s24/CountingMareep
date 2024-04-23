@@ -153,6 +153,23 @@ app.post("/login", async (req, res) => {
     return res.status(401).json({ msg: "Incorrect Password", sessionID: "" });
 });
 
+app.post("/logout", async (req, res) => {
+    const inputs = req.body;
+    if (!inputs) {
+        return res.status(400).json({ msg: "Missing Request Body" });
+    }
+    const relevantArgs = ["sessionID"];
+    if (isAnyArgUndefined(inputs, relevantArgs)) {
+        return res.status(401).json({ msg: "Missing Field" });
+    }
+    if (inputs.sessionID && sessionsList[inputs.sessionID]) {
+        delete sessionsList[inputs.sessionID];
+        return res.status(200).json({ msg: "Success" });
+    } else {
+        return res.status(401).json({ msg: "Invalid Session" });
+    }
+});
+
 app.post("/createPokemon", async (req, res) => {
     const inputs = req.body;
     if (!inputs) {
