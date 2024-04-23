@@ -181,6 +181,37 @@ app.post("/createPokemon", async (req, res) => {
     return res.status(200).json({ msg: "Success" });
 });
 
+app.post("/updatePokemon", async (req, res) => {
+    const inputs = req.body;
+    if (!inputs) {
+        return res.status(400).json({ msg: "Missing Request Body" });
+    }
+    const relevantArgs = ["sessionID", "name", "level", "pokedexEntry", "subSkills", "ingredients", "nature", "RP", "mainSkillLevel", "pokemonID"];
+    if (isAnyArgUndefined(inputs, relevantArgs)) {
+        return res.status(401).json({ msg: "Missing Field" });
+    }
+    // Validate Session
+    const session = sessionsList[inputs.sessionID];
+    if (!session) {
+        return res.status(401).json({ msg: "Invalid Session" });
+    }
+    await Pokemon.updateOne(
+        { pokemonID: inputs.pokemonID, ownerName: session.username },
+        {
+            ownerName: session.username,
+            name: inputs.name,
+            level: inputs.level,
+            pokedexEntry: inputs.pokedexEntry,
+            subSkills: inputs.subSkills,
+            ingredients: inputs.ingredients,
+            nature: inputs.nature,
+            RP: inputs.RP,
+            mainSkillLevel: inputs.mainSkillLevel,
+            pokemonID: inputs.pokemonID
+        });
+    return res.status(200).json({ msg: "Success" });
+});
+
 /*
  * sessionID 
  */
