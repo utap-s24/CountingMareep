@@ -185,6 +185,7 @@ app.post("/createPokemon", async (req, res) => {
  * sessionID 
  */
 app.post("/getPokemon", async (req, res) => {
+    console.log("Get", req.body);
     const inputs = req.body;
     if (!inputs) {
         return res.status(400).json({ msg: "Missing Request Body" });
@@ -193,7 +194,9 @@ app.post("/getPokemon", async (req, res) => {
     if (!session) {
         return res.status(401).json({ msg: "Invalid Session" });
     }
+    console.log("Username", session.username);
     let result = await Pokemon.find({ ownerName: session.username });
+    console.log(result);
     return res.status(200).json(result);
 });
 
