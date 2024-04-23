@@ -195,7 +195,7 @@ app.post("/getPokemon", async (req, res) => {
     if (!session) {
         return res.status(401).json({ msg: "Invalid Session" });
     }
-    return res.status(200).json(await Pokemon.find({ name: session.username }));
+    return res.status(200).json(await Pokemon.find({ ownerName: session.username }));
 });
 
 app.listen(PORT, async () => {

@@ -64,6 +64,7 @@ class LoginFragment : Fragment() {
                     if (response.body()?.sessionID != null) {
                         viewModel.setSession(response.body()?.sessionID!!)
                         mainActivity.saveUserPass(username, password)
+                        viewModel.loadPokemonBox(mainActivity)
                         Toast.makeText(getActivity(), "Login successful!", Toast.LENGTH_LONG).show()
                     }
                     mainActivity.loggedInRedirect()

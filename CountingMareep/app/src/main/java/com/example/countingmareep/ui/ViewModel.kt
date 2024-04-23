@@ -2,16 +2,22 @@ package com.example.countingmareep
 
 import PokemonDataModel
 import android.util.Log
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
-import com.example.countingmareep.ui.box.Ingredient
-import com.example.countingmareep.ui.box.Ingredients
-import com.example.countingmareep.ui.box.Nature
+import com.example.countingmareep.network.ApiService
+import com.example.countingmareep.network.PokemonResponse
+import com.example.countingmareep.network.UserResponse
 import com.example.countingmareep.ui.box.PokemonData
-import com.example.countingmareep.ui.box.modify.SubSkill
-import com.example.countingmareep.ui.box.modify.Skills
 import com.example.countingmareep.ui.team_builder.PokemonTeam
-import java.util.Random
-import java.util.UUID
+import com.google.gson.Gson
+import okhttp3.OkHttpClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class ViewModel : ViewModel() {
     companion object {
@@ -103,6 +109,32 @@ class ViewModel : ViewModel() {
 
     fun setSession(id: String) {
         sessionID = id
+    }
+
+    fun loadPokemonBox(mainActivity: MainActivity) {
+        val client = OkHttpClient.Builder().build()
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://countingmareep.onrender.com/")
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val service = retrofit.create(ApiService::class.java)
+        val getCall = service.getPokemon(sessionID)
+
+        getCall.enqueue(object : Callback<List<PokemonResponse>> {
+            override fun onResponse(call: Call<List<PokemonResponse>>, response: Response<List<PokemonResponse>>) {
+                if (response.isSuccessful) {
+                    Toast.makeText(mainActivity, "Box Length ${response.body()?.size.toString()}", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(mainActivity, "Bad Code ${response.code()}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<PokemonResponse>>, t: Throwable) {
+                Toast.makeText(mainActivity, "Failed Some Reason ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     fun getSession(): String {

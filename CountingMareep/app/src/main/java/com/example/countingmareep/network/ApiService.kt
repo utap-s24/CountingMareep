@@ -24,4 +24,10 @@ interface ApiService {
         @Field("befriended") befriended: Int = 0,
         @Field("hoursSlept") hoursSlept: Int = 0
     ): Call<UserResponse>
+
+    @POST("getPokemon")
+    @FormUrlEncoded
+    fun getPokemon(
+        @Field("sessionID") sessionID: String
+    ): Call<List<PokemonResponse>>
 }
