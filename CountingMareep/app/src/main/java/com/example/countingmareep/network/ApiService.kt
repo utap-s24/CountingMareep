@@ -1,9 +1,7 @@
 package com.example.countingmareep.network
 
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface ApiService {
     @POST("login")
@@ -30,4 +28,19 @@ interface ApiService {
     fun getPokemon(
         @Field("sessionID") sessionID: String
     ): Call<List<PokemonResponse>>
+
+    @POST("getUserData")
+    @FormUrlEncoded
+    fun getUserData(
+        @Field("sessionID") sessionID: String
+    ): Call<UserDataResponse>
+
+    @POST("updateUserData")
+    @FormUrlEncoded
+    fun updateUserData(
+        @Field("sessionID") sessionID: String,
+        @Field("rank") rank: Int,
+        @Field("befriended") befriended: Int,
+        @Field("hoursSlept") hoursSlept: Int
+    ): Call<UserDataResponse>
 }
