@@ -90,6 +90,7 @@ interface ApiService {
         @Field("sessionID") sessionID: String,
         @Field("rank") rank: Int,
         @Field("befriended") befriended: Int,
-        @Field("hoursSlept") hoursSlept: Int
+        @Field("hoursSlept") hoursSlept: Int,
+        @Field("birthday") birthday: Long
     ): Call<UserDataResponse>
 }

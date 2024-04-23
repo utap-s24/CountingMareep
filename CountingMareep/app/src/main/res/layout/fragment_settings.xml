@@ -195,7 +195,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="Birthday: 16/03/2004"
+            android:text="Birthday: "
             android:textColor="?attr/colorTertiary"
             android:textSize="20sp"
             android:textStyle="bold" />

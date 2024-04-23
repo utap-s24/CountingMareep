@@ -40,7 +40,8 @@ class ViewModel : ViewModel() {
     private var userIcon: Int = 243
     private var userRank: Int = 1
     private var userBefriended: Int = 32
-    private var hoursSlept: Int = 1876 // Hours
+    private var hoursSlept: Int = 1876
+    private var userBirthday: Long = 0L
 
     private var selectedBoxPokemon: Int = -1
     private var pokemonList: MutableList<PokemonDataModel> = mutableListOf()
@@ -101,6 +102,14 @@ class ViewModel : ViewModel() {
 
     fun setHoursSlept(hours: Int) {
         hoursSlept = hours
+    }
+
+    fun getBirthday(): Long {
+        return userBirthday
+    }
+
+    fun setBirthday(birthday: Long) {
+        userBirthday = birthday
     }
 
     fun getAllTeams(): List<TeamResponse> {

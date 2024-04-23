@@ -22,6 +22,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 import java.io.InputStream
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class SettingsFragment : Fragment() {
     private var _binding: FragmentSettingsBinding? = null
@@ -73,6 +75,7 @@ class SettingsFragment : Fragment() {
                         viewModel.setRank(it.rank)
                         viewModel.setBefriended(it.befriended)
                         viewModel.setHoursSlept(it.hoursSlept)
+                        viewModel.setBirthday(it.birthday)
                         updateUI()
                     }
                 } else {
@@ -90,7 +93,7 @@ class SettingsFragment : Fragment() {
         val rank = binding.settingsRankTV.text.toString().toInt()
         val befriended = binding.settingsBefriendedTV.text.toString().toInt()
         val hoursSlept = binding.settingsSleptTV.text.toString().toInt()
-        val birthday = binding.settingsBirthdayTV.text.toString().toLong()
+        val birthday = viewModel.getBirthday()
 
         val client = OkHttpClient.Builder().build()
         val retrofit = Retrofit.Builder()
@@ -100,7 +103,7 @@ class SettingsFragment : Fragment() {
             .build()
 
         val service = retrofit.create(ApiService::class.java)
-        val updateCall = service.updateUserData(viewModel.getSession(), rank, befriended, hoursSlept)
+        val updateCall = service.updateUserData(viewModel.getSession(), rank, befriended, hoursSlept, birthday)
 
         updateCall.enqueue(object : Callback<UserDataResponse> {
             override fun onResponse(call: Call<UserDataResponse>, response: Response<UserDataResponse>) {
@@ -125,6 +128,14 @@ class SettingsFragment : Fragment() {
         binding.settingsRankTV.setText(viewModel.getRank().toString())
         binding.settingsBefriendedTV.setText(viewModel.getBefriended().toString())
         binding.settingsSleptTV.setText(viewModel.getHoursSlept().toString())
+        // Birthday is stored in millisecond time. Main_Activity does not have a function to convert it to a readable date.
+        binding.settingsBirthdayTV.setText("Birthday: " + fomratDateFromMillis(viewModel.getBirthday()))
+    }
+
+    private fun fomratDateFromMillis(millis: Long): String {
+        val sdf = SimpleDateFormat("dd/MM/yyyy")
+        val netDate = Date(millis)
+        return sdf.format(netDate)
     }
 
     override fun onDestroyView() {
