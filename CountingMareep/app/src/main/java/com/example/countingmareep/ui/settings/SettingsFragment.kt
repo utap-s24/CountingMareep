@@ -72,6 +72,7 @@ class SettingsFragment : Fragment() {
             override fun onResponse(call: Call<UserDataResponse>, response: Response<UserDataResponse>) {
                 if (response.isSuccessful) {
                     response.body()?.let {
+                        viewModel.setUserName(it.name.toString()) // Could cause issues
                         viewModel.setRank(it.rank)
                         viewModel.setBefriended(it.befriended)
                         viewModel.setHoursSlept(it.hoursSlept)
@@ -90,6 +91,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun saveUserData() {
+        val name = binding.settingsName.text.toString()
         val rank = binding.settingsRankTV.text.toString().toInt()
         val befriended = binding.settingsBefriendedTV.text.toString().toInt()
         val hoursSlept = binding.settingsSleptTV.text.toString().toInt()
@@ -103,14 +105,10 @@ class SettingsFragment : Fragment() {
             .build()
 
         val service = retrofit.create(ApiService::class.java)
-        val updateCall = service.updateUserData(viewModel.getSession(), rank, befriended, hoursSlept, birthday)
+        val updateCall = service.updateUserData(viewModel.getSession(), name, rank, befriended, hoursSlept, birthday)
 
         updateCall.enqueue(object : Callback<UserDataResponse> {
             override fun onResponse(call: Call<UserDataResponse>, response: Response<UserDataResponse>) {
-                // Create a log message to print the response body and status code and check if the response is successful in kotlin using Log.d
-                Log.d("Response", "Response body: ${response.body()}")
-                Log.d("Response", "Response code: ${response.code()}")
-                Log.d("Response", "Response successful: ${response.isSuccessful}")        
                 if (response.isSuccessful) {
                     Toast.makeText(context, "Data updated successfully!", Toast.LENGTH_LONG).show()
                 } else {
@@ -125,11 +123,16 @@ class SettingsFragment : Fragment() {
     }
 
     private fun updateUI() {
+        binding.settingsName.setText(viewModel.getUserName())
         binding.settingsRankTV.setText(viewModel.getRank().toString())
         binding.settingsBefriendedTV.setText(viewModel.getBefriended().toString())
         binding.settingsSleptTV.setText(viewModel.getHoursSlept().toString())
-        // Birthday is stored in millisecond time. Main_Activity does not have a function to convert it to a readable date.
         binding.settingsBirthdayTV.setText("Birthday: " + fomratDateFromMillis(viewModel.getBirthday()))
+        // binding.settingsName = viewModel.getUserName()
+        // binding.settingsRankTV = viewModel.getRank().toString()
+        // binding.settingsBefriendedTV = viewModel.getBefriended().toString()
+        // binding.settingsSleptTV = viewModel.getHoursSlept().toString()
+        // binding.settingsBirthdayTV = "Birthday: " + fomratDateFromMillis(viewModel.getBirthday())
     }
 
     private fun fomratDateFromMillis(millis: Long): String {

@@ -88,6 +88,7 @@ interface ApiService {
     @FormUrlEncoded
     fun updateUserData(
         @Field("sessionID") sessionID: String,
+        @Field("name") name: String,
         @Field("rank") rank: Int,
         @Field("befriended") befriended: Int,
         @Field("hoursSlept") hoursSlept: Int,

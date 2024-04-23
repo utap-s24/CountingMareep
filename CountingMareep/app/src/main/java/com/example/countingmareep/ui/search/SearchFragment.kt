@@ -43,12 +43,10 @@ class SearchFragment : Fragment() {
         val pokemonList: List<PokemonDataModel>
     )
 
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        val searchViewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        val searchViewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
 
         // Generate fake teams
         fakeTeams = viewModel.getAllTeams()

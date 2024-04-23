@@ -38,6 +38,7 @@ class ViewModel : ViewModel() {
     private var sessionID: String = ""
     private var themeIsDark: Boolean = false
     private var userIcon: Int = 243
+    private var userName: String = "Ash Ketchum"
     private var userRank: Int = 1
     private var userBefriended: Int = 32
     private var hoursSlept: Int = 1876
@@ -78,6 +79,14 @@ class ViewModel : ViewModel() {
 
     fun getDataList(): List<PokemonDataModel> {
         return pokemonList
+    }
+
+    fun getUserName(): String {
+        return userName
+    }
+
+    fun setUserName(name: String) {
+        userName = name
     }
 
     fun getRank(): Int {
