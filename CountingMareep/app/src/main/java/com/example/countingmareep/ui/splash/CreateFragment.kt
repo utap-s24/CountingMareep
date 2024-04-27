@@ -18,6 +18,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
+
 
 class CreateFragment : Fragment() {
     private var _binding: FragmentCreateBinding? = null
@@ -40,12 +44,22 @@ class CreateFragment : Fragment() {
         val username = binding.usernameInput.text.toString()
         val email = binding.emailInput.text.toString()
         val password = binding.passwordInput.text.toString()
-        var birthdayStr = binding.birthdayInput.text.toString()
-        if(binding.birthdayInput.text.toString().isEmpty()) {
+        val birthdayDayStr = binding.birthdayInputDay.text.toString()
+        val birthdayMonthStr = binding.birthdayInputMonth.text.toString()
+        val birthdayYearStr = binding.birthdayInputYear.text.toString()
+        if(birthdayDayStr.isEmpty() || birthdayMonthStr.isEmpty() || birthdayYearStr.isEmpty()) {
             Toast.makeText(activity, "Birthday must be filled in", Toast.LENGTH_SHORT).show()
             return
         }
-        val birthday = birthdayStr.toLong()
+        val birthdayDay = birthdayDayStr.toInt()
+        val birthdayMonth = birthdayMonthStr.toInt()
+        val birthdayYear = birthdayYearStr.toInt()
+        if(birthdayDay < 1 || birthdayDay > 31 || birthdayMonth < 1 || birthdayMonth > 12 || birthdayYear < 1900 || birthdayYear > 2024) {
+            Toast.makeText(activity, "Invalid Birthday", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val birthday = toEpochMilli(LocalDate.of(birthdayYear, birthdayMonth, birthdayDay).atStartOfDay())
         val rank = 1
         val befriended = 0
         val hoursSlept = 0
@@ -77,6 +91,11 @@ class CreateFragment : Fragment() {
                 Toast.makeText(getActivity(), "Error: ${t.message}", Toast.LENGTH_LONG).show()
             }
         })
+    }
+
+    private fun toEpochMilli(localDateTime: LocalDateTime): Long {
+        return localDateTime.atZone(ZoneId.systemDefault())
+            .toInstant().toEpochMilli()
     }
 
     override fun onDestroyView() {
